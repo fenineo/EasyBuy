@@ -13,7 +13,7 @@ public class Product {
     private int categoryLevel2Id;     //分类2 二级菜单
     private int categoryLevel3Id;     //分类3 三级菜单
     private String fileName;          //图片文件名
-    private int isDelete;             //是否删除
+    private int isDelete;             //是否删除(1：删除 0：未删除)
 
     public Product(int id, String name, String description, double price, int stock, int categoryLevel1Id, int categoryLevel2Id, int categoryLevel3Id, String fileName, int isDelete) {
         this.id = id;
@@ -29,6 +29,22 @@ public class Product {
     }
 
     public Product() {
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", stock=" + stock +
+                ", categoryLevel1Id=" + categoryLevel1Id +
+                ", categoryLevel2Id=" + categoryLevel2Id +
+                ", categoryLevel3Id=" + categoryLevel3Id +
+                ", fileName='" + fileName + '\'' +
+                ", isDelete=" + isDelete +
+                '}';
     }
 
     public int getId() {

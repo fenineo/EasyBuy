@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.easybuy.mapper.ProductMapper">
+    <select id="findProductList" resultType="Product">
+        SELECT * FROM `easybuy_product`
+    </select>
+
+    <select id="findById" resultType="Product">
+        SELECT * FROM `easybuy_product`
+        WHERE `id`= #{id}
+    </select>
+
+    <insert id="addProduct">
+        INSERT INTO `easybuy_product`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="description != null">description,</if>
+            <if test="price != null">price,</if>
+            <if test="stock != null">stock,</if>
+            <if test="categoryLevel1Id != null">categoryLevel1Id,</if>
+            <if test="categoryLevel2Id != null">categoryLevel2Id,</if>
+            <if test="categoryLevel3Id != null">categoryLevel3Id,</if>
+            <if test="fileName != null">fileName,</if>
+            <if test="isDelete != null">isDelete,</if>
+        </trim>
+        <trim prefix="VALUE(" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="description != null">#{description},</if>
+            <if test="price != null">#{price},</if>
+            <if test="stock != null">#{stock},</if>
+            <if test="categoryLevel1Id != null">#{categoryLevel1Id},</if>
+            <if test="categoryLevel2Id != null">#{categoryLevel2Id},</if>
+            <if test="categoryLevel3Id != null">#{categoryLevel3Id},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+        </trim>
+    </insert>
+
+    <delete id="removeProduct">
+        DELETE FROM `easybuy_product`
+        WHERE `id`= #{id}
+    </delete>
+
+    <update id="modifyProduct">
+        UPDATE `easybuy_product`
+        <trim prefix="SET " suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="stock != null">stock = #{stock},</if>
+            <if test="categoryLevel1Id != null">categoryLevel1Id = #{categoryLevel1Id},</if>
+            <if test="categoryLevel2Id != null">categoryLevel2Id = #{categoryLevel2Id},</if>
+            <if test="categoryLevel3Id != null">categoryLevel3Id = #{categoryLevel3Id},</if>
+            <if test="fileName != null">fileName = #{fileName},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+        </trim>
+        WHERE `id`= #{id}
+    </update>
+
+</mapper>

@@ -5,9 +5,9 @@ package com.example.easybuy.entity;
  */
 public class User {
     private int id;                 //主键
-    private String loginName;       //登录名
+    private String loginName;       //登录名(账号)
     private String userName;        //用户名
-    private String Password;        //密码
+    private String password;        //密码
     private int sex;                //性别(1:男 0：女)
     private String identityCode;    //身份证号
     private String email;           //邮箱
@@ -18,7 +18,7 @@ public class User {
         this.id = id;
         this.loginName = loginName;
         this.userName = userName;
-        Password = password;
+        this.password = password;
         this.sex = sex;
         this.identityCode = identityCode;
         this.email = email;
@@ -27,6 +27,21 @@ public class User {
     }
 
     public User() {
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", loginName='" + loginName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", sex=" + sex +
+                ", identityCode='" + identityCode + '\'' +
+                ", email='" + email + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", type=" + type +
+                '}';
     }
 
     public int getId() {
@@ -54,11 +69,11 @@ public class User {
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
     public int getSex() {
