@@ -43,4 +43,10 @@ public class NewsServiceImpl implements NewsService{
         }
         return flag;
     }
+
+    @Override
+    public List<News> getNews() {
+        List<News> list = newsMapper.getNews();
+        return list;
+    }
 }

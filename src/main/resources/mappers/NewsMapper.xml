@@ -31,4 +31,7 @@
         </trim>
         WHERE `id`= #{id};
     </update>
+    <select id="getNews" resultType="News">
+        SELECT * FROM `easybuy_news`
+    </select>
 </mapper>
