@@ -10,4 +10,7 @@ public interface ProductCategoryService {
     boolean removeProductCategory(int id);
     boolean modifyProductCategory(ProductCategory productCategory);
     ProductCategory findById(int id);
+    List<ProductCategory> onecategoryLevel1Id();
+    List<ProductCategory> onecategoryLevel2Id();
+    List<ProductCategory> onecategoryLevel3Id();
 }

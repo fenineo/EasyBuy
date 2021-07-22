@@ -48,4 +48,19 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
     public ProductCategory findById(int id) {
         return productCategoryMapper.findById(id);
     }
+
+    @Override
+    public List<ProductCategory> onecategoryLevel1Id() {
+        return productCategoryMapper.onecategoryLevel1Id();
+    }
+
+    @Override
+    public List<ProductCategory> onecategoryLevel2Id() {
+        return productCategoryMapper.onecategoryLevel2Id();
+    }
+
+    @Override
+    public List<ProductCategory> onecategoryLevel3Id() {
+        return productCategoryMapper.onecategoryLevel3Id();
+    }
 }

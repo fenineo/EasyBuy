@@ -13,5 +13,7 @@ public interface ProductCategoryMapper {
     int removeProductCategory(int id);
     int modifyProductCategory(ProductCategory productCategory);
     ProductCategory findById(int id);
-
+    List<ProductCategory> onecategoryLevel1Id();
+    List<ProductCategory> onecategoryLevel2Id();
+    List<ProductCategory> onecategoryLevel3Id();
 }

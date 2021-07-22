@@ -45,4 +45,17 @@
         SELECT * FROM `easybuy_product_category`
         WHERE id = #{id}
     </select>
+
+    <select id="onecategoryLevel1Id" resultType="ProductCategory">
+        SELECT * FROM `easybuy_product_category` WHERE TYPE = 1 LIMIT 0,10
+    </select>
+
+
+    <select id="onecategoryLevel2Id" resultType="ProductCategory">
+        SELECT * FROM `easybuy_product_category` WHERE TYPE = 2 LIMIT 0,10
+    </select>
+
+    <select id="onecategoryLevel3Id" resultType="ProductCategory">
+        SELECT * FROM `easybuy_product_category` WHERE TYPE = 3 LIMIT 0,10
+    </select>
 </mapper>
