@@ -9,6 +9,7 @@ public interface NewsMapper {
     int addNews(News news);//添加新闻
     int removeNews(int id);//删除新闻
     int modifyNews(News news);//修改新闻
+    List<News> getNews();//查询所有的新闻
 
 
 
