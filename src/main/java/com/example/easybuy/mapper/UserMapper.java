@@ -10,4 +10,5 @@ public interface UserMapper {
     int modifyUser(User user);
     List<User> findUserList();
     User findById(int id);
+    User findByLoginName(String loginName);
 }

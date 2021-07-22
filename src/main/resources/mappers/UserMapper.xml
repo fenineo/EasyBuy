@@ -12,6 +12,11 @@
         WHERE `id`= #{id}
     </select>
 
+    <select id="findByLoginName" resultType="User">
+        SELECT * FROM `easybuy_user`
+        WHERE `loginName` = #{loginName}
+    </select>
+
     <insert id="addUser">
         INSERT INTO `easybuy_user`
         <trim prefix="(" suffix=")" suffixOverrides=",">

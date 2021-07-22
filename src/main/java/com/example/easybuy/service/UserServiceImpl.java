@@ -48,4 +48,16 @@ public class UserServiceImpl implements UserService{
     public User findById(int id) {
         return userMapper.findById(id);
     }
+
+    @Override
+    /**
+     * 查询是否存在该登陆名
+     */
+    public boolean findByLoginName(String loginName) {
+        boolean flag = false;
+        if (userMapper.findByLoginName(loginName) != null){
+            flag = true;
+        }
+        return flag;
+    }
 }
