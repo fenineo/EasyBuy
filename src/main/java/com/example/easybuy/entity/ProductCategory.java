@@ -60,4 +60,15 @@ public class ProductCategory {
     public void setIconClass(String iconClass) {
         this.iconClass = iconClass;
     }
+
+    @Override
+    public String toString() {
+        return "ProductCategory{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", parentId=" + parentId +
+                ", type=" + type +
+                ", iconClass='" + iconClass + '\'' +
+                '}';
+    }
 }

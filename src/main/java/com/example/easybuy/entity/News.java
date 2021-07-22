@@ -1,5 +1,7 @@
 package com.example.easybuy.entity;
 
+import java.util.Date;
+
 /**
  * 资讯表实体类
  */
@@ -14,9 +16,6 @@ public class News {
         this.title = title;
         this.content = content;
         this.createTime = createTime;
-    }
-
-    public News() {
     }
 
     public int getId() {
