@@ -10,4 +10,5 @@ public interface UserService {
     boolean removeUser(int id);
     List<User> findUserList();
     User findById(int id);
+    boolean findByLoginName(String loginName);
 }
