@@ -34,4 +34,10 @@
     <select id="getNews" resultType="News">
         SELECT * FROM `easybuy_news`
     </select>
+    <select id="getPageNews" resultType="News">
+        SELECT * FROM `easybuy_news` LIMIT #{currentpage},#{pageSize}
+    </select>
+    <select id="findById" resultType="News">
+        SELECT * FROM `easybuy_news` where id=#{id}
+    </select>
 </mapper>
