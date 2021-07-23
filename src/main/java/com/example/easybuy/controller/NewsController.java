@@ -3,14 +3,17 @@ package com.example.easybuy.controller;
 import com.alibaba.fastjson.JSON;
 import com.example.easybuy.entity.News;
 import com.example.easybuy.service.NewsService;
+import com.example.easybuy.tools.PageBean;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
 
-@Controller
+@RestController
 public class NewsController {
     @Resource
     private NewsService newsService;
@@ -19,7 +22,6 @@ public class NewsController {
      * @return
      */
     @RequestMapping("/getNewsDesc")
-    @ResponseBody
     public String getNewsDesc(){
         List<News> list=newsService.getNewsDesc();
         return JSON.toJSONString(list);
@@ -28,7 +30,6 @@ public class NewsController {
      * 查询所有的新闻数据
      */
     @RequestMapping("/getAllNews")
-    @ResponseBody
     public String getNews(){
         List<News> list=newsService.getNews();
         return JSON.toJSONString(list);
@@ -37,7 +38,6 @@ public class NewsController {
      * 添加新闻
      */
     @RequestMapping("/addNews")
-    @ResponseBody
     public boolean addNews(){
 
         return true;
@@ -46,17 +46,47 @@ public class NewsController {
      * 删除新闻
      */
     @RequestMapping("/removeNews")
-    @ResponseBody
-    public boolean removeNews(){
-
-        return true;
+    public String removeNews(String id){
+        String a;
+        boolean flag=newsService.removeNews(Integer.parseInt(id));
+        if(flag){
+            a="true";
+        }else {
+            a="false";
+        }
+        return a;
     }
     /**
      * 修改新闻
      */
     @RequestMapping("/modifyNews")
-    @ResponseBody
     public boolean modifyNews(){
         return true;
+    }
+    /**
+     *分页查询
+     */
+    @RequestMapping("/getPageNews")
+    public String getPageNews(String currentpage){
+        if(currentpage==null || currentpage.equals("")){
+            currentpage= "1";
+        }
+        List<News> list=newsService.getNews();
+        List<News> pageList=newsService.getPageNews((Integer.parseInt(currentpage)-1)*10, 10);
+        PageBean page=new PageBean();
+        page.setList(pageList);//查询出来的集合
+        page.setTotalCount(list.size());
+        page.setPageSize(10);//每一页查询的条数
+        page.setCurrentpage(Integer.parseInt(currentpage));//当前是第几页
+        return JSON.toJSONString(page);
+    }
+
+    /**
+     *根据Id查询 查询新闻详情
+     */
+    @RequestMapping("/findById")
+    public String findById(String id){
+        News news=newsService.findById(Integer.parseInt(id));
+        return JSON.toJSONString(news);
     }
 }
