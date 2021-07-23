@@ -49,4 +49,14 @@ public class NewsServiceImpl implements NewsService{
         List<News> list = newsMapper.getNews();
         return list;
     }
+    public List<News> getPageNews(int currentpage,int pageSize){
+        List<News> list = newsMapper.getPageNews(currentpage,pageSize);
+        return list;
+    }
+
+    @Override
+    public News findById(int id) {
+        News news=newsMapper.findById(id);
+        return news;
+    }
 }
