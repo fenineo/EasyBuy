@@ -51,13 +51,9 @@ public class UserServiceImpl implements UserService{
 
     @Override
     /**
-     * 查询是否存在该登陆名
+     * 根据登陆名查询用户
      */
-    public boolean findByLoginName(String loginName) {
-        boolean flag = false;
-        if (userMapper.findByLoginName(loginName) != null){
-            flag = true;
-        }
-        return flag;
+    public User findByLoginName(String loginName) {
+        return userMapper.findByLoginName(loginName);
     }
 }
