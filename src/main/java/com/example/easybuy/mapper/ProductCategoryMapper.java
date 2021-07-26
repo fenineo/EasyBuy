@@ -8,12 +8,12 @@ import com.example.easybuy.entity.ProductCategory;
 import java.util.List;
 
 public interface ProductCategoryMapper {
-    List<ProductCategory> findProductCategoryList();
-    int addProductCategory(ProductCategory productCategory);
-    int removeProductCategory(int id);
-    int modifyProductCategory(ProductCategory productCategory);
-    ProductCategory findById(int id);
-    List<ProductCategory> onecategoryLevel1Id();
-    List<ProductCategory> onecategoryLevel2Id();
-    List<ProductCategory> onecategoryLevel3Id();
+    List<ProductCategory> findProductCategoryList();            //查询所有商品分类
+    int addProductCategory(ProductCategory productCategory);    //添加商品分类
+    int removeProductCategory(int id);                          //删除商品分类
+    int modifyProductCategory(ProductCategory productCategory); //修改商品分类
+    ProductCategory findById(int id);                           //查询id
+    List<ProductCategory> onecategoryLevel1Id();                //查询一级分类商品
+    List<ProductCategory> onecategoryLevel2Id();                //查询所有商品分类
+    List<ProductCategory> onecategoryLevel3Id();                //商品type从小到大ASC查询
 }
