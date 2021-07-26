@@ -146,9 +146,4 @@ public class UserController {
         return flag+"";
     }
 
-    @RequestMapping("/demo")
-    public String demo(){
-        return "";
-    }
-
 }

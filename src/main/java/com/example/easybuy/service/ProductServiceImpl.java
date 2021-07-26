@@ -1,6 +1,7 @@
 package com.example.easybuy.service;
 
 import com.example.easybuy.entity.Product;
+import com.example.easybuy.entity.ProductCategory;
 import com.example.easybuy.mapper.ProductMapper;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +48,10 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product findById(int id) {
         return productMapper.findById(id);
+    }
+
+    @Override
+    public List<ProductCategory> findByType(int type) {
+        return productMapper.findByType(type);
     }
 }

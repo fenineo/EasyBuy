@@ -20,6 +20,7 @@ public class JwtTool {
         map.put("typ","JWT");
         String token = JWT.create()
                 .withHeader(map)
+                .withClaim("id",user.getId())
                 .withClaim("loginName",user.getLoginName())
                 .withClaim("type",user.getType())
                 .sign(Algorithm.HMAC256("mwi&$nf%"));
@@ -44,10 +45,12 @@ public class JwtTool {
         //解析token，获得解密文档
         DecodedJWT verify = verifier.verify(token);
         //用解密文档获得载荷内容
+        int id = verify.getClaim("id").asInt();
         String loginName = verify.getClaim("loginName").asString();
         int type = verify.getClaim("type").asInt();
 
         HashMap<String,Object> map = new HashMap<>();
+        map.put("id",id);
         map.put("loginName",loginName);
         map.put("type",type);
 

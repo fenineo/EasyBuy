@@ -3,6 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.easybuy.mapper.ProductMapper">
+
+    <select id="findByType" resultType="ProductCategory">
+        SELECT * FROM `easybuy_product_category`
+        WHERE `type` = #{type}
+        GROUP BY `type` ASC,id
+    </select>
+
     <select id="findProductList" resultType="Product">
         SELECT * FROM `easybuy_product`
     </select>
