@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.easybuy.entity.ProductCategory;
 import com.example.easybuy.service.ProductCategoryService;
+import com.example.easybuy.tools.PageBeanAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -61,6 +62,9 @@ public class ProductCategorController {
 
     /**
      * 添加商品分类
+     * @param name
+     * @param parentId
+     * @param type
      * @return
      */
     @RequestMapping("/addProductCategory")
@@ -79,6 +83,7 @@ public class ProductCategorController {
 
     /**
      * 删除商品分类
+     * @param id
      * @return
      */
     @RequestMapping("/removeProductCategory")
@@ -95,11 +100,16 @@ public class ProductCategorController {
 
     /**
      * 修改商品分类
+     * @param id
+     * @param name
+     * @param parentId
+     * @param type
      * @return
      */
     @RequestMapping("/modifyProductCategory")
-    public String modifyproductCategory(String name,String parentId,String type){
+    public String modifyproductCategory(String id,String name,String parentId,String type){
         ProductCategory productCategory = new ProductCategory();
+        productCategory.setId(Integer.parseInt(id));
         productCategory.setName(name);
         productCategory.setParentId(Integer.parseInt(parentId));
         productCategory.setType(Integer.parseInt(type));
@@ -121,4 +131,15 @@ public class ProductCategorController {
         ProductCategory productCategory = productCategoryService.findById(Integer.parseInt(id));
         return JSON.toJSONString(productCategory);
     }
+
+    @RequestMapping("/categorylist")
+    public PageBeanAll categorlsit1(String pageIndex){
+        int _pageIndex = Integer.parseInt(pageIndex);
+        int totalCount = productCategoryService.findcategoryCount();
+        List<ProductCategory> productCategoryList = productCategoryService.findcategoryPage(_pageIndex,8);
+        PageBeanAll categorypage = new PageBeanAll(_pageIndex,8,totalCount);
+        categorypage.setList(productCategoryList);
+        return categorypage;
+    }
+
 }
