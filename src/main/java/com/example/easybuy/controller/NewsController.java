@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
+@RequestMapping("/News")
 public class NewsController {
     @Resource
     private NewsService newsService;
@@ -38,9 +41,16 @@ public class NewsController {
      * 添加新闻
      */
     @RequestMapping("/addNews")
-    public boolean addNews(){
-
-        return true;
+    public boolean addNews(String title,String content){
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(System.currentTimeMillis());
+        String time=formatter.format(date);;
+        News news=new News();
+        news.setTitle(title);
+        news.setContent(content);
+        news.setCreateTime(time);
+        boolean flag=newsService.addNews(news);
+        return flag;
     }
     /**
      * 删除新闻
@@ -60,8 +70,13 @@ public class NewsController {
      * 修改新闻
      */
     @RequestMapping("/modifyNews")
-    public boolean modifyNews(){
-        return true;
+    public boolean modifyNews(String id,String title,String content){
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(System.currentTimeMillis());
+        String time=formatter.format(date);;
+        News news=new News(Integer.parseInt(id),title,content,time);
+        boolean flag=newsService.modifyNews(news);
+        return flag;
     }
     /**
      *分页查询
