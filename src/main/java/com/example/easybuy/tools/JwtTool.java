@@ -38,7 +38,7 @@ public class JwtTool {
         return true;
     }
     //解析token，获得用户的登陆名和权限等级
-    public static HashMap<String,Object> parseUser(String token){
+    public static HashMap<String,Object> parseMap(String token){
         //用盐获得可以解析token的JWTVerifier对象
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256("mwi&$nf%")).build();
         //解析token，获得解密文档
