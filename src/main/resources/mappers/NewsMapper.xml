@@ -35,9 +35,10 @@
         SELECT * FROM `easybuy_news`
     </select>
     <select id="getPageNews" resultType="News">
-        SELECT * FROM `easybuy_news` LIMIT #{currentpage},#{pageSize}
+        SELECT * FROM `easybuy_news` GROUP BY `createTime` DESC,id DESC  LIMIT #{pageIndex},#{pageSize}
     </select>
     <select id="findById" resultType="News">
         SELECT * FROM `easybuy_news` where id=#{id}
     </select>
+
 </mapper>

@@ -124,4 +124,20 @@ public class UserAddress {
                 ", remark='" + remark + '\'' +
                 '}';
     }
+
+    public UserAddress(int userId, String consignee, String address, String phone, String email, String xaddress) {
+        this.userId = userId;
+        this.consignee = consignee;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.xaddress = xaddress;
+    }
+    public UserAddress(String consignee, String address, String phone, String email, String xaddress){
+        this.consignee = consignee;
+        this.address = address;
+        this.phone = phone;
+        this.email = email;
+        this.xaddress = xaddress;
+    }
 }
