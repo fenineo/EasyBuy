@@ -4,6 +4,8 @@ package com.example.easybuy.mapper;
  */
 
 import com.example.easybuy.entity.ProductCategory;
+import com.example.easybuy.entity.User;
+import org.apache.ibatis.annotations.Param;
 
 import org.apache.ibatis.annotations.Param;
 

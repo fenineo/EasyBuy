@@ -49,8 +49,8 @@ public class NewsServiceImpl implements NewsService{
         List<News> list = newsMapper.getNews();
         return list;
     }
-    public List<News> getPageNews(int currentpage,int pageSize){
-        List<News> list = newsMapper.getPageNews(currentpage,pageSize);
+    public List<News> getPageNews(int pageIndex,int pageSize){
+        List<News> list = newsMapper.getPageNews(pageIndex,pageSize);
         return list;
     }
 

@@ -3,12 +3,15 @@ package com.example.easybuy.controller;
 import com.example.easybuy.entity.User;
 import com.example.easybuy.service.UserService;
 import com.example.easybuy.tools.JwtTool;
+import com.example.easybuy.tools.PageBean;
+import com.example.easybuy.tools.PageBeanAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -31,18 +34,11 @@ public class UserController {
     public String register(String loginName, String userName, String password, String sex,
                            @RequestParam(required = false) String identityCode,
                            @RequestParam(required = false) String email,
-                           @RequestParam(required = false) String mobile,
-                           String type){
+                           @RequestParam(required = false) String mobile){
         boolean flag = false;
         int _sex = Integer.parseInt(sex);
         User user = new User(0,loginName,userName,password,_sex,identityCode,email,mobile,0);
-        try {
-            if(userService.addUser(user)){
-                flag = true;
-            }
-        }catch (Exception e){
-            return flag+"";
-        }
+        flag = userService.addUser(user);
         return flag+"";
     }
 
@@ -81,11 +77,73 @@ public class UserController {
         map.put("flag",false);
 
         if (JwtTool.parseJwt(token)){
-            map = JwtTool.parseUser(token);
+            map = JwtTool.parseMap(token);
             map.put("flag",true);
         }
 
         return map;
+    }
+    //获得用户列表
+    @RequestMapping("/userList")
+    public PageBeanAll userList(String pageIndex){
+        int _pageIndex = Integer.parseInt(pageIndex);
+        int totalCount = userService.findUserCount();
+        List<User> userList = userService.findUserPage(_pageIndex,10);
+        PageBeanAll userPage = new PageBeanAll(_pageIndex,10,totalCount);
+        userPage.setList(userList);
+        return userPage;
+    }
+    //管理员添加用户
+    @RequestMapping("/userAdd")
+    public String userAdd(String token,String loginName, String userName, String password, String sex,
+                          @RequestParam(required = false) String identityCode,
+                          @RequestParam(required = false) String email,
+                          @RequestParam(required = false) String mobile,
+                          String type){
+        boolean flag = false;
+        Integer tokenType = (Integer) JwtTool.parseMap(token).get("type");//获得已登陆用户的权限等级
+        if (tokenType == 1){
+            int _sex = Integer.parseInt(sex);
+            int _type = Integer.parseInt(type);
+            User user = new User(0,loginName,userName,password,_sex,identityCode,email,mobile,_type);
+            flag = userService.addUser(user);
+        }
+        return flag+"";
+    }
+    //管理员删除用户
+    @RequestMapping("/userRemove")
+    public String userRemove(String token,String id){
+        boolean flag = false;
+        int _id = Integer.parseInt(id);
+        Integer tokenType = (Integer) JwtTool.parseMap(token).get("type");//获得已登陆用户的权限等级
+        if (tokenType == 1){
+            flag = userService.removeUser(_id);
+        }
+        return flag+"";
+    }
+    //根据登陆名获取用户
+    @RequestMapping("/userByLoginName")
+    public User userByLoginName(String loginName){
+        User user = userService.findByLoginName(loginName);
+        return user;
+    }
+    //管理员修改用户
+    @RequestMapping("/userModify")
+    public String userModify(String token,String id, String loginName, String userName, String sex,
+                             @RequestParam(required = false) String identityCode,
+                             @RequestParam(required = false) String email,
+                             @RequestParam(required = false) String mobile,
+                             String type){
+        boolean flag = false;
+        Integer tokenType = (Integer) JwtTool.parseMap(token).get("type");//获得已登陆用户的权限等级
+        if (tokenType == 1){
+            int _id = Integer.parseInt(id);
+            int _sex = Integer.parseInt(sex);
+            int _type = Integer.parseInt(type);
+            User user = new User(_id,loginName,userName,null,_sex,identityCode,email,mobile,_type);
+            flag = userService.modifyUser(user);
+        }
+        return flag+"";
     }
 
 }

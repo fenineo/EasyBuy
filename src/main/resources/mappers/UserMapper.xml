@@ -17,6 +17,15 @@
         WHERE `loginName` = #{loginName}
     </select>
 
+    <select id="findUserPage" resultType="User">
+        SELECT * FROM `easybuy_user`
+        LIMIT #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="findUserCount" resultType="int">
+        SELECT COUNT(*) FROM `easybuy_user`
+    </select>
+
     <insert id="addUser">
         INSERT INTO `easybuy_user`
         <trim prefix="(" suffix=")" suffixOverrides=",">

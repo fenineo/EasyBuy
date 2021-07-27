@@ -10,6 +10,6 @@ public interface NewsService {
     boolean removeNews(int id);//删除新闻
     boolean modifyNews(News news);//修改新闻
     List<News> getNews();//查询所有的新闻
-    List<News> getPageNews(int currentpage,int pageSize);//分页查询
+    List<News> getPageNews(int pageIndex,int pageSize);//分页查询
     News findById(int id);
 }

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -132,20 +131,15 @@ public class ProductCategorController {
         ProductCategory productCategory = productCategoryService.findById(Integer.parseInt(id));
         return JSON.toJSONString(productCategory);
     }
-    //分类列表
+
     @RequestMapping("/categorylist")
-    public HashMap<String,Object> categorlsit1(String pageIndex){
+    public PageBeanAll categorlsit1(String pageIndex){
         int _pageIndex = Integer.parseInt(pageIndex);
         int totalCount = productCategoryService.findcategoryCount();
-        List<ProductCategory> productCategoryList2 = productCategoryService.findProductCategoryList();
-        List<ProductCategory> productCategoryList = productCategoryService.findcategoryPage(_pageIndex,10);
-        PageBeanAll categorypage = new PageBeanAll(_pageIndex,10,totalCount);
+        List<ProductCategory> productCategoryList = productCategoryService.findcategoryPage(_pageIndex,8);
+        PageBeanAll categorypage = new PageBeanAll(_pageIndex,8,totalCount);
         categorypage.setList(productCategoryList);
-
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("categorypage",categorypage);
-        map.put("productCategoryList2",productCategoryList2);
-        return map;
+        return categorypage;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.easybuy.service;
 
 import com.example.easybuy.entity.Product;
+import com.example.easybuy.entity.ProductCategory;
 import com.example.easybuy.mapper.ProductMapper;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +48,22 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Product findById(int id) {
         return productMapper.findById(id);
+    }
+
+    @Override
+    public List<ProductCategory> findByType(int type) {
+        return productMapper.findByType(type);
+    }
+
+    @Override
+    public List<Product> findPageByCategory(int pageIndex, int pageSize, int categoryLevel3Id) {
+        //计算分页查询开始位置
+        Integer _pageIndex = (pageIndex-1)*pageSize;
+        return productMapper.findPageByCategory(_pageIndex,pageSize,categoryLevel3Id);
+    }
+
+    @Override
+    public int findCountByCategory(int categoryLevel3Id) {
+        return productMapper.findCountByCategory(categoryLevel3Id);
     }
 }

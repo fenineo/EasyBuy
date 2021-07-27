@@ -1,24 +1,16 @@
 package com.example.easybuy.tools;
 
 import com.example.easybuy.entity.News;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public class PageBean {
+public class PageBeanAll {
     private int pageIndex;  //页码
     private int pageSize;   //页容量
     private int pageCount;  //总页数
     private int totalCount; //总记录数
-    private List<News> list;//分页集合
+    private List list;//分页集合
 
-    public List<News> getList() {
-        return list;
-    }
-
-    public void setList(List<News> list) {
-        this.list = list;
-    }
     public int getPageIndex() {
         return pageIndex;
     }
@@ -42,12 +34,21 @@ public class PageBean {
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
     }
+
+    public List getList() {
+        return list;
+    }
+
+    public void setList(List list) {
+        this.list = list;
+    }
+
     public int getPageCount() {
         this.pageCount = totalCount%pageSize==0?totalCount/pageSize:(totalCount/pageSize)+1;
         return pageCount;
     }
 
-    public PageBean(int pageIndex, int pageSize, int totalCount) {
+    public PageBeanAll(int pageIndex, int pageSize, int totalCount) {
         super();
         this.pageIndex = pageIndex;
         this.pageSize = pageSize;
@@ -55,7 +56,7 @@ public class PageBean {
         this.pageCount = totalCount%pageSize==0?totalCount/pageSize:(totalCount/pageSize)+1;
     }
 
-    public PageBean() {
+    public PageBeanAll() {
         super();
     }
 }

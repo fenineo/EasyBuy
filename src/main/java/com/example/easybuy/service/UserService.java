@@ -9,6 +9,8 @@ public interface UserService {
     boolean modifyUser(User user);
     boolean removeUser(int id);
     List<User> findUserList();
+    List<User> findUserPage(int pageIndex,int pageSize);
+    int findUserCount();
     User findById(int id);
     User findByLoginName(String loginName);
 }

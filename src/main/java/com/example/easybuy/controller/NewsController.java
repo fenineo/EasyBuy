@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
+@RequestMapping("/News")
 public class NewsController {
     @Resource
     private NewsService newsService;
@@ -38,9 +41,16 @@ public class NewsController {
      * 添加新闻
      */
     @RequestMapping("/addNews")
-    public boolean addNews(){
-
-        return true;
+    public boolean addNews(String title,String content){
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(System.currentTimeMillis());
+        String time=formatter.format(date);;
+        News news=new News();
+        news.setTitle(title);
+        news.setContent(content);
+        news.setCreateTime(time);
+        boolean flag=newsService.addNews(news);
+        return flag;
     }
     /**
      * 删除新闻
@@ -60,25 +70,35 @@ public class NewsController {
      * 修改新闻
      */
     @RequestMapping("/modifyNews")
-    public boolean modifyNews(){
-        return true;
+    public boolean modifyNews(String id,String title,String content){
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(System.currentTimeMillis());
+        String time=formatter.format(date);;
+        News news=new News(Integer.parseInt(id),title,content,time);
+        boolean flag=newsService.modifyNews(news);
+        return flag;
     }
     /**
      *分页查询
      */
     @RequestMapping("/getPageNews")
-    public String getPageNews(String currentpage){
-        if(currentpage==null || currentpage.equals("")){
-            currentpage= "1";
-        }
-        List<News> list=newsService.getNews();
-        List<News> pageList=newsService.getPageNews((Integer.parseInt(currentpage)-1)*10, 10);
-        PageBean page=new PageBean();
-        page.setList(pageList);//查询出来的集合
-        page.setTotalCount(list.size());
-        page.setPageSize(10);//每一页查询的条数
-        page.setCurrentpage(Integer.parseInt(currentpage));//当前是第几页
-        return JSON.toJSONString(page);
+    public String getPageNews(String pageIndex){
+//        if(currentpage==null || currentpage.equals("")){
+//            currentpage= "1";
+//        }
+//        List<News> list=newsService.getNews();
+//        List<News> pageList=newsService.getPageNews((Integer.parseInt(currentpage)-1)*10, 10);
+//        PageBean page=new PageBean();
+//        page.setList(pageList);//查询出来的集合
+//        page.setTotalCount(list.size());
+//        page.setPageSize(10);//每一页查询的条数
+//        page.setCurrentpage(Integer.parseInt(currentpage));//当前是第几页
+        int _pageIndex = Integer.parseInt(pageIndex);
+        int totalCount =newsService.getNews().size();
+        List<News> pageList=newsService.getPageNews((Integer.parseInt(pageIndex)-1)*10, 10);
+        PageBean pageBean=new PageBean(_pageIndex,10,totalCount);
+        pageBean.setList(pageList);
+        return JSON.toJSONString(pageBean);
     }
 
     /**

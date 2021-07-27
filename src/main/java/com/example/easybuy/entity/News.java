@@ -17,6 +17,7 @@ public class News {
         this.content = content;
         this.createTime = createTime;
     }
+    public News(){}
 
     public int getId() {
         return id;
