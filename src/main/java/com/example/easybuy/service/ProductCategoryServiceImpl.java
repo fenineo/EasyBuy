@@ -63,4 +63,17 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
     public List<ProductCategory> onecategoryLevel3Id() {
         return productCategoryMapper.onecategoryLevel3Id();
     }
+
+    @Override
+    public int findcategoryCount() {
+        return productCategoryMapper.findcategoryCount();
+    }
+
+    @Override
+    public List<ProductCategory> findcategoryPage(int pageIndex, int pageSize) {
+        //计算分页查询开始位置
+        Integer _pageIndex = (pageIndex-1)*pageSize;
+        return productCategoryMapper.findcategoryPage(_pageIndex,pageSize);
+    }
+
 }

@@ -58,4 +58,11 @@
     <select id="onecategoryLevel3Id" resultType="ProductCategory">
         SELECT * FROM `easybuy_product_category` GROUP BY `type` ASC,id
     </select>
+
+    <select id="findcategoryCount" resultType="int">
+        SELECT COUNT(*) FROM `easybuy_product_category`
+    </select>
+    <select id="findcategoryPage" resultType="ProductCategory">
+        SELECT * FROM `easybuy_product_category` LIMIT #{pageIndex},#{pageSize}
+    </select>
 </mapper>
