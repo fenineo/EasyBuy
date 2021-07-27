@@ -54,4 +54,16 @@ public class ProductServiceImpl implements ProductService{
     public List<ProductCategory> findByType(int type) {
         return productMapper.findByType(type);
     }
+
+    @Override
+    public List<Product> findPageByCategory(int pageIndex, int pageSize, int categoryLevel3Id) {
+        //计算分页查询开始位置
+        Integer _pageIndex = (pageIndex-1)*pageSize;
+        return productMapper.findPageByCategory(_pageIndex,pageSize,categoryLevel3Id);
+    }
+
+    @Override
+    public int findCountByCategory(int categoryLevel3Id) {
+        return productMapper.findCountByCategory(categoryLevel3Id);
+    }
 }

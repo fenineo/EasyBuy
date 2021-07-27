@@ -4,13 +4,14 @@ import com.example.easybuy.entity.Product;
 import com.example.easybuy.entity.ProductCategory;
 import com.example.easybuy.service.ProductCategoryService;
 import com.example.easybuy.service.ProductService;
+import com.example.easybuy.tools.PageBeanAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/product")
@@ -19,6 +20,7 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private ProductCategoryService productCategoryService;
+    private ArrayList<Product> shoppingProduct = new ArrayList<>();
     //获取商品分类信息和商品信息
     @RequestMapping("/productList")
     public HashMap<String,Object> productList(){
@@ -37,18 +39,83 @@ public class ProductController {
     @RequestMapping("/productInfo")
     public HashMap<String,Object> productInfo(String id){
         int _id = Integer.parseInt(id);
-        System.out.println(_id);
         Product product = productService.findById(_id);
         ProductCategory categoryLv1 = productCategoryService.findById(product.getCategoryLevel1Id());
         ProductCategory categoryLv2 = productCategoryService.findById(product.getCategoryLevel2Id());
         ProductCategory categoryLv3  = productCategoryService.findById(product.getCategoryLevel3Id());
         String path = "全部 > ";
-
-        path += categoryLv1.getName()+" > "+categoryLv2.getName()+" > "+categoryLv3.getName()+" > "+product.getName();
+        if(categoryLv1 != null){
+            path += categoryLv1.getName()+" > ";
+        }
+        if(categoryLv2 != null){
+            path += categoryLv2.getName()+" > ";
+        }
+        if(categoryLv3 != null){
+            path += categoryLv3.getName()+" > ";
+        }
+        path += product.getName();
         HashMap<String,Object> map = new HashMap<>();
         map.put("path",path);
         map.put("product",product);
         return map;
+    }
+
+    @RequestMapping("/productInfoBycategory")
+    public HashMap<String,Object> productInfoBycategory(int pageIndex,int pageSize,int categoryId){
+        ProductCategory categoryLv3  = productCategoryService.findById(categoryId);
+        ProductCategory categoryLv2 = productCategoryService.findById(categoryLv3.getParentId());
+        ProductCategory categoryLv1 = productCategoryService.findById(categoryLv2.getParentId());
+        String path = "全部 > ";
+        if(categoryLv1 != null){
+            path += categoryLv1.getName()+" > ";
+        }
+        if(categoryLv2 != null){
+            path += categoryLv2.getName()+" > ";
+        }
+        if(categoryLv3 != null){
+            path += categoryLv3.getName();
+        }
+
+        int totalCount = productService.findCountByCategory(categoryId);
+        List<Product> productList = productService.findPageByCategory(pageIndex,pageSize,categoryId);
+        PageBeanAll productPage = new PageBeanAll(pageIndex,pageSize,totalCount);
+        productPage.setList(productList);
+
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("path",path);
+        map.put("productPage",productPage);
+        return map;
+    }
+
+    @RequestMapping("/addShopping")
+    public HashMap<String,Object> addShopping(String token,int productId,int number){
+        Product product = productService.findById(productId);
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("flag",false);
+
+        if (shoppingProduct != null){
+            for (int i = 0;i < shoppingProduct.size();i++){
+                if (shoppingProduct.get(i).getId() == productId){
+                    shoppingProduct.get(i).setStock(shoppingProduct.get(i).getStock()+number);
+                    map.put("shoppingProduct",shoppingProduct);
+                    map.put("flag",true);
+                    return map;
+                }
+            }
+        }
+
+        product.setStock(number);
+        if (shoppingProduct.add(product)){
+            map.put("shoppingProduct",shoppingProduct);
+            map.put("flag",true);
+        }
+
+        return map;
+    }
+
+    @RequestMapping("/findShopping")
+    public ArrayList<Product> findShopping(String token){
+        return shoppingProduct;
     }
 
     @RequestMapping("/demo")
