@@ -35,11 +35,10 @@ public class ProductController {
         map.put("productList",productList);
         return map;
     }
-
+    //根据商品id获取商品信息和分类路径
     @RequestMapping("/productInfo")
-    public HashMap<String,Object> productInfo(String id){
-        int _id = Integer.parseInt(id);
-        Product product = productService.findById(_id);
+    public HashMap<String,Object> productInfo(int id){
+        Product product = productService.findById(id);
         ProductCategory categoryLv1 = productCategoryService.findById(product.getCategoryLevel1Id());
         ProductCategory categoryLv2 = productCategoryService.findById(product.getCategoryLevel2Id());
         ProductCategory categoryLv3  = productCategoryService.findById(product.getCategoryLevel3Id());
@@ -59,7 +58,7 @@ public class ProductController {
         map.put("product",product);
         return map;
     }
-
+    //根据商品分类查询商品集合
     @RequestMapping("/productInfoBycategory")
     public HashMap<String,Object> productInfoBycategory(int pageIndex,int pageSize,int categoryId){
         ProductCategory categoryLv3  = productCategoryService.findById(categoryId);
@@ -86,7 +85,7 @@ public class ProductController {
         map.put("productPage",productPage);
         return map;
     }
-
+    //为购物车添加商品
     @RequestMapping("/addShopping")
     public HashMap<String,Object> addShopping(String token,int productId,int number){
         Product product = productService.findById(productId);
@@ -112,15 +111,51 @@ public class ProductController {
 
         return map;
     }
+    //修改购物车中商品的数量
+    @RequestMapping("/modifyShopping")
+    public HashMap<String,Object> modifyShopping(String token,int productId,int number){
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("flag",false);
 
+        if (shoppingProduct != null){
+            for (int i = 0;i < shoppingProduct.size();i++){
+                if (shoppingProduct.get(i).getId() == productId){
+                    shoppingProduct.get(i).setStock(number);
+                    map.put("shoppingProduct",shoppingProduct);
+                    map.put("flag",true);
+                }
+            }
+        }
+
+        return map;
+    }
+    //删除购物车中的商品
+    @RequestMapping("/removeShopping")
+    public HashMap<String,Object> removeShopping(String token,int productId){
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("flag",false);
+
+        if (shoppingProduct != null){
+            for (int i = 0;i < shoppingProduct.size();i++){
+                if (shoppingProduct.get(i).getId() == productId){
+                    shoppingProduct.remove(i);
+                    map.put("flag",true);
+                }
+            }
+        }
+        System.out.println("进入");
+        map.put("shoppingProduct",shoppingProduct);
+        return map;
+    }
+    //根据token查询购物车信息
     @RequestMapping("/findShopping")
     public ArrayList<Product> findShopping(String token){
         return shoppingProduct;
     }
 
-    @RequestMapping("/demo")
-    public String demo(String id){
-        return "";
-    }
+//    @RequestMapping("/demo")
+//    public String demo(String id){
+//        return "";
+//    }
 
 }

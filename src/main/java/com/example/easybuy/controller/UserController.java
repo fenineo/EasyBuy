@@ -3,7 +3,6 @@ package com.example.easybuy.controller;
 import com.example.easybuy.entity.User;
 import com.example.easybuy.service.UserService;
 import com.example.easybuy.tools.JwtTool;
-import com.example.easybuy.tools.PageBean;
 import com.example.easybuy.tools.PageBeanAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
