@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -68,16 +69,17 @@ public class ProductCategorController {
      * @return
      */
     @RequestMapping("/addProductCategory")
-    public String addproductCategor(String name,String parentId,String type){
+    public boolean addproductCategor(String name,String parentId,String type){
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName(name);
         productCategory.setParentId(Integer.parseInt(parentId));
         productCategory.setType(Integer.parseInt(type));
         boolean flag=productCategoryService.addProductCategory(productCategory);
         if(flag==true){
-            return "true";
+            return flag;
         }else{
-            return "false";
+            flag=false;
+            return flag;
         }
     }
 
@@ -87,14 +89,14 @@ public class ProductCategorController {
      * @return
      */
     @RequestMapping("/removeProductCategory")
-    public String removeproductCategory(String id){
+    public boolean removeproductCategory(String id){
         ProductCategory productCategory = new ProductCategory();
         productCategory.setId(Integer.parseInt(id));
         boolean flag = productCategoryService.removeProductCategory(Integer.parseInt(id));
         if (flag){
-            return "true";
+            return true;
         }else {
-            return "false";
+            return false;
         }
     }
 
@@ -131,15 +133,20 @@ public class ProductCategorController {
         ProductCategory productCategory = productCategoryService.findById(Integer.parseInt(id));
         return JSON.toJSONString(productCategory);
     }
-
+    //分类列表
     @RequestMapping("/categorylist")
-    public PageBeanAll categorlsit1(String pageIndex){
+    public HashMap<String,Object> categorlsit1(String pageIndex){
         int _pageIndex = Integer.parseInt(pageIndex);
         int totalCount = productCategoryService.findcategoryCount();
-        List<ProductCategory> productCategoryList = productCategoryService.findcategoryPage(_pageIndex,8);
-        PageBeanAll categorypage = new PageBeanAll(_pageIndex,8,totalCount);
+        List<ProductCategory> productCategoryList2 = productCategoryService.findProductCategoryList();
+        List<ProductCategory> productCategoryList = productCategoryService.findcategoryPage(_pageIndex,10);
+        PageBeanAll categorypage = new PageBeanAll(_pageIndex,10,totalCount);
         categorypage.setList(productCategoryList);
-        return categorypage;
+
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("categorypage",categorypage);
+        map.put("productCategoryList2",productCategoryList2);
+        return map;
     }
 
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/product")
@@ -39,6 +40,7 @@ public class ProductController {
     @RequestMapping("/productInfo")
     public HashMap<String,Object> productInfo(String id){
         int _id = Integer.parseInt(id);
+        System.out.println(_id);
         Product product = productService.findById(_id);
         ProductCategory categoryLv1 = productCategoryService.findById(product.getCategoryLevel1Id());
         ProductCategory categoryLv2 = productCategoryService.findById(product.getCategoryLevel2Id());
@@ -59,7 +61,6 @@ public class ProductController {
         map.put("product",product);
         return map;
     }
-
     @RequestMapping("/productInfoBycategory")
     public HashMap<String,Object> productInfoBycategory(int pageIndex,int pageSize,int categoryId){
         ProductCategory categoryLv3  = productCategoryService.findById(categoryId);

@@ -20,10 +20,15 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
     @Override
     public boolean addProductCategory(ProductCategory productCategory) {
         boolean flag = false;
-        if (productCategoryMapper.addProductCategory(productCategory)> 0){
-            flag = true;
+        try{
+            if (productCategoryMapper.addProductCategory(productCategory)> 0){
+                flag = true;
+            }
+        }catch (Exception e){
+            return flag;
         }
         return flag;
+
     }
 
     @Override
