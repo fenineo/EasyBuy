@@ -56,4 +56,7 @@
         </trim>
         WHERE `userId`= #{userId};
     </update>
+    <select id="findByUser" resultType="UserAddress">
+        SELECT * FROM easybuy_user_address WHERE userId=#{userId} AND isDefault =1
+    </select>
 </mapper>

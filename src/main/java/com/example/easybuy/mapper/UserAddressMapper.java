@@ -12,5 +12,5 @@ public interface UserAddressMapper {
     int modifyUserAddress(UserAddress userAddress);//修改新闻
     int isDefault(int id);//设置默认地址
     int allisDefault(int userId);//重置默认地址
-
+    UserAddress findByUser(int userId);//根据用户id查询默认地址
 }

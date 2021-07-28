@@ -12,4 +12,5 @@ public interface UserAddressService {
     boolean modifyUserAddress(UserAddress userAddress);//修改新闻
     boolean isDefault(int id);//设置默认地址
     boolean allisDefault(int userId);//重置默认地址
+    UserAddress findByUser(int userId);//根据用户id查询默认地址
 }
