@@ -57,7 +57,6 @@ public class UserAddressController {
         int uid=Integer.parseInt(id);
         userAddress.setId(uid);
         boolean flag=userAddressService.modifyUserAddress(userAddress);
-        System.out.println(flag);
         return "";
     }
     /**
@@ -75,5 +74,13 @@ public class UserAddressController {
     private String isDefault(String id){
         boolean flag=userAddressService.isDefault(Integer.parseInt(id));
         return "";
+    }
+    /**
+     * 查询默认地址
+     */
+    @RequestMapping("/findByUser")
+    private  String findByUser(String userId){
+        UserAddress userAddress=userAddressService.findByUser(Integer.parseInt(userId));
+        return JSON.toJSONString(userAddress);
     }
 }

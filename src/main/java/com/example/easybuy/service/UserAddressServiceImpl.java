@@ -68,4 +68,10 @@ public class UserAddressServiceImpl implements UserAddressService{
         }
         return flag;
     }
+
+    @Override
+    public UserAddress findByUser(int userId) {
+        UserAddress userAddress=userAddressMapper.findByUser(userId);
+        return userAddress;
+    }
 }
