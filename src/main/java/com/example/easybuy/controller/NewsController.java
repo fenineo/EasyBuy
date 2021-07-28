@@ -93,6 +93,9 @@ public class NewsController {
 //        page.setTotalCount(list.size());
 //        page.setPageSize(10);//每一页查询的条数
 //        page.setCurrentpage(Integer.parseInt(currentpage));//当前是第几页
+        if(pageIndex==null || pageIndex.equals("")){
+            pageIndex="1";
+        }
         int _pageIndex = Integer.parseInt(pageIndex);
         int totalCount =newsService.getNews().size();
         List<News> pageList=newsService.getPageNews((Integer.parseInt(pageIndex)-1)*10, 10);
