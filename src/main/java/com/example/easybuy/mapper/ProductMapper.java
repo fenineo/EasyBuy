@@ -15,4 +15,5 @@ public interface ProductMapper {
     List<ProductCategory> findByType(int type);     //根据分类等级查询分类信息
     List<Product> findPageByCategory(@Param("pageIndex") int pageIndex,@Param("pageSize") int pageSize,@Param("categoryLevel3Id") int categoryLevel3Id);    //根据分类分页查询商品信息
     int findCountByCategory(int categoryLevel3Id);      //查询总记录数
+    List<Product> getPageProduct(@Param("pageIndex") int pageIndex, @Param("pageSize") int pageSize);//分页查询
 }

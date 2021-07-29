@@ -1,16 +1,13 @@
 package com.example.easybuy.service;
 
-import com.example.easybuy.entity.News;
 import com.example.easybuy.entity.Product;
 import com.example.easybuy.entity.ProductCategory;
 import com.example.easybuy.mapper.ProductMapper;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 
-@Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceSolrImpl implements ProductService{
     @Resource
     private ProductMapper productMapper;
 
@@ -43,7 +40,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<Product> findProductList() {
-        return productMapper.findProductList();
+        return null;
     }
 
     @Override
@@ -66,11 +63,5 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public int findCountByCategory(int categoryLevel3Id) {
         return productMapper.findCountByCategory(categoryLevel3Id);
-    }
-
-    @Override
-    public List<Product> getPageProduct(int pageIndex, int pageSize) {
-        List<Product> list = productMapper.getPageProduct(pageIndex,pageSize);
-        return list;
     }
 }

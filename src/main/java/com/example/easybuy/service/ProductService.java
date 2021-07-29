@@ -1,5 +1,6 @@
 package com.example.easybuy.service;
 
+import com.example.easybuy.entity.News;
 import com.example.easybuy.entity.Product;
 import com.example.easybuy.entity.ProductCategory;
 import org.apache.ibatis.annotations.Param;
@@ -15,4 +16,5 @@ public interface ProductService {
     List<ProductCategory> findByType(int type);    //根据分类等级查询分类信息
     List<Product> findPageByCategory(int pageIndex,int pageSize,int categoryLevel3Id);    //根据分类分页查询商品信息
     int findCountByCategory(int categoryLevel3Id);      //查询总记录数
+    List<Product> getPageProduct(@Param("pageIndex") int pageIndex, @Param("pageSize") int pageSize);//分页查询
 }
