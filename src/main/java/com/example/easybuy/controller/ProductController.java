@@ -22,7 +22,7 @@ public class ProductController {
     private ProductCategoryService productCategoryService;
     private ArrayList<Product> shoppingProduct = new ArrayList<>();
     //获取商品分类信息和商品信息
-    @RequestMapping("/productList")
+    @RequestMapping("/tourist/productList")
     public HashMap<String,Object> productList(){
         HashMap<String,Object> map = new HashMap<>();
         List<ProductCategory> categoryOneList = productService.findByType(1);
@@ -36,7 +36,7 @@ public class ProductController {
         return map;
     }
     //根据商品id获取商品信息和分类路径
-    @RequestMapping("/productInfo")
+    @RequestMapping("/tourist/productInfo")
     public HashMap<String,Object> productInfo(int id){
         Product product = productService.findById(id);
         ProductCategory categoryLv1 = productCategoryService.findById(product.getCategoryLevel1Id());
@@ -59,7 +59,7 @@ public class ProductController {
         return map;
     }
     //根据商品分类查询商品集合
-    @RequestMapping("/productInfoBycategory")
+    @RequestMapping("/tourist/productInfoBycategory")
     public HashMap<String,Object> productInfoBycategory(int pageIndex,int pageSize,int categoryId){
         ProductCategory categoryLv3  = productCategoryService.findById(categoryId);
         ProductCategory categoryLv2 = productCategoryService.findById(categoryLv3.getParentId());
