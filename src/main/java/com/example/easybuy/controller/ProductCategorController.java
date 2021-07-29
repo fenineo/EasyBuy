@@ -41,7 +41,7 @@ public class ProductCategorController {
      * @param productCategory
      * @return
      */
-    @RequestMapping("/twocategoryLevel2Id")
+    @RequestMapping("/tourist/twocategoryLevel2Id")
     public String twocategoryLevel2Id(ProductCategory productCategory){
         List<ProductCategory> list1 =productCategoryService.onecategoryLevel3Id();
 

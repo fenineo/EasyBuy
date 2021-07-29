@@ -16,7 +16,7 @@ public class UserAddressController {
     /**
      * 查询收获地址
      */
-    @RequestMapping("/findByUserId")
+    @RequestMapping("/tourist/findByUserId")
     private String findByUserId(String userId){
         List<UserAddress> list=userAddressService.findByUserId(Integer.parseInt(userId));
         return JSON.toJSONString(list);
@@ -24,7 +24,7 @@ public class UserAddressController {
     /**
      * 添加收货地址
      */
-    @RequestMapping("/addUserAddress")
+    @RequestMapping("/tourist/addUserAddress")
     private String addUserAddress(String userId, String consignee, String address, String phone, String email, String xaddress){
         UserAddress userAddress=new UserAddress(Integer.parseInt(userId),consignee,address,phone,email,xaddress);
         boolean flag=userAddressService.addUserAddress(userAddress);
@@ -33,7 +33,7 @@ public class UserAddressController {
     /**
      * 删除收货地址
      */
-    @RequestMapping("/removeUserAddress")
+    @RequestMapping("/tourist/removeUserAddress")
     private String removeUserAddress(String id){
         boolean flag=userAddressService.removeUserAddress(Integer.parseInt(id));
         return "";
@@ -43,7 +43,7 @@ public class UserAddressController {
      * @param id
      * @return
      */
-    @RequestMapping("/findById")
+    @RequestMapping("/tourist/findById")
     private String findById(String id){
         UserAddress userAddress=userAddressService.findById(Integer.parseInt(id));
         return JSON.toJSONString(userAddress);
@@ -51,7 +51,7 @@ public class UserAddressController {
     /**
      *修改收货地址
      */
-    @RequestMapping("/modifyUserAddress")
+    @RequestMapping("/tourist/modifyUserAddress")
     private String modifyUserAddress(String id, String consignee, String address, String phone, String email, String xaddress){
         UserAddress userAddress=new UserAddress(consignee,address,phone,email,xaddress);
         int uid=Integer.parseInt(id);
@@ -62,7 +62,7 @@ public class UserAddressController {
     /**
      * 重置默认
      */
-    @RequestMapping("/allisDefault")
+    @RequestMapping("/tourist/allisDefault")
     private String allisDefault(String userId){
         boolean flag=userAddressService.allisDefault(Integer.parseInt(userId));
         return "";
