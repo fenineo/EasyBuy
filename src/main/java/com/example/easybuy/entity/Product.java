@@ -1,18 +1,34 @@
 package com.example.easybuy.entity;
 
+import org.apache.solr.client.solrj.beans.Field;
+import org.springframework.data.solr.core.mapping.SolrDocument;
+
+import java.io.Serializable;
+
 /**
  * 商品表实体类
  */
-public class Product {
+@SolrDocument
+public class Product implements Serializable {
+    @Field("id")
     private int id;                   //主键
+    @Field("name_ik")
     private String name;              //名称
+    @Field("description_iks")
     private String description;       //描述
+    @Field("price_d")
     private double price;             //价格
+    @Field("stock_i")
     private int stock;                //库存
+    @Field("categoryLevel1Id_i")
     private int categoryLevel1Id;     //分类1 一级菜单
+    @Field("categoryLevel2Id_i")
     private int categoryLevel2Id;     //分类2 二级菜单
+    @Field("categoryLevel3Id_i")
     private int categoryLevel3Id;     //分类3 三级菜单
+    @Field("fileName_iks")
     private String fileName;          //图片文件名
+    @Field("isDelete_i")
     private int isDelete;             //是否删除(1：删除 0：未删除)
 
     public Product(int id, String name, String description, double price, int stock, int categoryLevel1Id, int categoryLevel2Id, int categoryLevel3Id, String fileName, int isDelete) {
