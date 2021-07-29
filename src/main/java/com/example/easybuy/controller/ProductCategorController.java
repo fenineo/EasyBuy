@@ -28,11 +28,32 @@ public class ProductCategorController {
      * @param productCategory
      * @return
      */
-    @RequestMapping("/onecategoryLevel1Id")
-    public String onecategoryLevel1Id(ProductCategory productCategory){
+    @RequestMapping("/onecategoryLevel1")
+    public String onecategoryLevel1(ProductCategory productCategory){
+        List<ProductCategory> list1 = productCategoryService.onecategoryLevel1();
+        return JSON.toJSONString(list1);
+    }
 
-        List<ProductCategory> list2 =productCategoryService.onecategoryLevel2Id();
+    /**
+     * 查询二级列表
+     * @param productCategory
+     * @return
+     */
+    @RequestMapping("/onecategoryLevel2")
+    public String onecategoryLevel2(ProductCategory productCategory){
+        List<ProductCategory> list2 =productCategoryService.onecategoryLevel2();
         return JSON.toJSONString(list2);
+    }
+
+    /**
+     * 查询三级列表
+     * @param productCategory
+     * @return
+     */
+    @RequestMapping("/onecategoryLevel3")
+    public String onecategoryLevel3(ProductCategory productCategory){
+        List<ProductCategory> list3 =productCategoryService.onecategoryLevel2();
+        return JSON.toJSONString(list3);
     }
 
     /**

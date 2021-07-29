@@ -60,11 +60,6 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
     }
 
     @Override
-    public List<ProductCategory> onecategoryLevel2Id() {
-        return productCategoryMapper.onecategoryLevel2Id();
-    }
-
-    @Override
     public List<ProductCategory> onecategoryLevel3Id() {
         return productCategoryMapper.onecategoryLevel3Id();
     }
@@ -79,6 +74,21 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
         //计算分页查询开始位置
         Integer _pageIndex = (pageIndex-1)*pageSize;
         return productCategoryMapper.findcategoryPage(_pageIndex,pageSize);
+    }
+
+    @Override
+    public List<ProductCategory> onecategoryLevel1() {
+        return productCategoryMapper.onecategoryLevel1();
+    }
+
+    @Override
+    public List<ProductCategory> onecategoryLevel2() {
+        return productCategoryMapper.onecategoryLevel2();
+    }
+
+    @Override
+    public List<ProductCategory> onecategoryLevel3() {
+        return productCategoryMapper.onecategoryLevel3();
     }
 
 }

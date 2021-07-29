@@ -51,10 +51,6 @@
     </select>
 
 
-    <select id="onecategoryLevel2Id" resultType="ProductCategory">
-        SELECT * FROM `easybuy_product_category` WHERE TYPE = 1
-    </select>
-
     <select id="onecategoryLevel3Id" resultType="ProductCategory">
         SELECT * FROM `easybuy_product_category` GROUP BY `type` ASC,id
     </select>
@@ -64,5 +60,15 @@
     </select>
     <select id="findcategoryPage" resultType="ProductCategory">
         SELECT * FROM `easybuy_product_category` LIMIT #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="onecategoryLevel1" resultType="ProductCategory">
+        SELECT * FROM `easybuy_product_category` WHERE TYPE = 1
+    </select>
+    <select id="onecategoryLevel2" resultType="ProductCategory">
+        SELECT * FROM `easybuy_product_category` WHERE TYPE = 2
+    </select>
+    <select id="onecategoryLevel3" resultType="ProductCategory">
+        SELECT * FROM `easybuy_product_category` WHERE TYPE = 3
     </select>
 </mapper>
