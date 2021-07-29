@@ -4,8 +4,10 @@ import com.example.easybuy.entity.Product;
 import com.example.easybuy.entity.ProductCategory;
 import com.example.easybuy.service.ProductCategoryService;
 import com.example.easybuy.service.ProductService;
+import com.example.easybuy.tools.JwtTool;
 import com.example.easybuy.tools.PageBeanAll;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +22,9 @@ public class ProductController {
     private ProductService productService;
     @Autowired
     private ProductCategoryService productCategoryService;
-    private ArrayList<Product> shoppingProduct = new ArrayList<>();
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     //获取商品分类信息和商品信息
     @RequestMapping("/tourist/productList")
     public HashMap<String,Object> productList(){
@@ -85,17 +89,27 @@ public class ProductController {
         map.put("productPage",productPage);
         return map;
     }
+
     //为购物车添加商品
     @RequestMapping("/addShopping")
     public HashMap<String,Object> addShopping(String token,int productId,int number){
-        Product product = productService.findById(productId);
+        Product product = productService.findById(productId);       //根据商品id查询商品
+        //根据token信息生成key
+        HashMap<String,Object> user = JwtTool.parseMap(token);
+        String key = user.get("id")+""+user.get("loginName");
+        //返回给前端的数据
         HashMap<String,Object> map = new HashMap<>();
         map.put("flag",false);
 
-        if (shoppingProduct != null){
+        List<Product> shoppingProduct = new ArrayList<>();
+
+        if(redisTemplate.hasKey(key)){
+            //从redis获取购物车
+            shoppingProduct = redisTemplate.opsForList().range(key,0,-1);
             for (int i = 0;i < shoppingProduct.size();i++){
                 if (shoppingProduct.get(i).getId() == productId){
                     shoppingProduct.get(i).setStock(shoppingProduct.get(i).getStock()+number);
+                    redisTemplate.opsForList().set(key,i,shoppingProduct.get(i));
                     map.put("shoppingProduct",shoppingProduct);
                     map.put("flag",true);
                     return map;
@@ -104,7 +118,8 @@ public class ProductController {
         }
 
         product.setStock(number);
-        if (shoppingProduct.add(product)){
+        if (redisTemplate.opsForList().rightPushAll(key,product) > 0){
+            shoppingProduct = redisTemplate.opsForList().range(key,0,-1);
             map.put("shoppingProduct",shoppingProduct);
             map.put("flag",true);
         }
@@ -114,13 +129,21 @@ public class ProductController {
     //修改购物车中商品的数量
     @RequestMapping("/modifyShopping")
     public HashMap<String,Object> modifyShopping(String token,int productId,int number){
+        //根据token信息生成key
+        HashMap<String,Object> user = JwtTool.parseMap(token);
+        String key = user.get("id")+""+user.get("loginName");
+
         HashMap<String,Object> map = new HashMap<>();
         map.put("flag",false);
+
+        //从redis获取购物车
+        List<Product> shoppingProduct = redisTemplate.opsForList().range(key,0,-1);
 
         if (shoppingProduct != null){
             for (int i = 0;i < shoppingProduct.size();i++){
                 if (shoppingProduct.get(i).getId() == productId){
                     shoppingProduct.get(i).setStock(number);
+                    redisTemplate.opsForList().set(key,i,shoppingProduct.get(i));
                     map.put("shoppingProduct",shoppingProduct);
                     map.put("flag",true);
                 }
@@ -132,24 +155,43 @@ public class ProductController {
     //删除购物车中的商品
     @RequestMapping("/removeShopping")
     public HashMap<String,Object> removeShopping(String token,int productId){
+        //根据token信息生成key
+        HashMap<String,Object> user = JwtTool.parseMap(token);
+        String key = user.get("id")+""+user.get("loginName");
+
         HashMap<String,Object> map = new HashMap<>();
         map.put("flag",false);
+
+        //从redis获取购物车
+        List<Product> shoppingProduct = redisTemplate.opsForList().range(key,0,-1);
 
         if (shoppingProduct != null){
             for (int i = 0;i < shoppingProduct.size();i++){
                 if (shoppingProduct.get(i).getId() == productId){
-                    shoppingProduct.remove(i);
+                    redisTemplate.opsForList().remove(key,1,shoppingProduct.get(i));
+                    shoppingProduct = redisTemplate.opsForList().range(key,0,-1);
                     map.put("flag",true);
+                    break;
                 }
             }
         }
-        System.out.println("进入");
         map.put("shoppingProduct",shoppingProduct);
         return map;
     }
     //根据token查询购物车信息
     @RequestMapping("/findShopping")
-    public ArrayList<Product> findShopping(String token){
+    public List<Product> findShopping(String token){
+        //根据token信息生成key
+        HashMap<String,Object> user = JwtTool.parseMap(token);
+        String key = user.get("id")+""+user.get("loginName");
+
+        List<Product> shoppingProduct = new ArrayList<>();
+
+        if(redisTemplate.hasKey(key)){
+            //从redis获取购物车
+            shoppingProduct = redisTemplate.opsForList().range(key,0,-1);
+        }
+
         return shoppingProduct;
     }
 
