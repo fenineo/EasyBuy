@@ -76,5 +76,8 @@
         </trim>
         WHERE `id`= #{id}
     </update>
+    <select id="getPageProduct" resultType="Product">
+        SELECT * FROM `easybuy_product` GROUP BY `id` DESC LIMIT #{pageIndex},#{pageSize}
+    </select>
 
 </mapper>

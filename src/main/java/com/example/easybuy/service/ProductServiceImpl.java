@@ -1,5 +1,6 @@
 package com.example.easybuy.service;
 
+import com.example.easybuy.entity.News;
 import com.example.easybuy.entity.Product;
 import com.example.easybuy.entity.ProductCategory;
 import com.example.easybuy.mapper.ProductMapper;
@@ -65,5 +66,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public int findCountByCategory(int categoryLevel3Id) {
         return productMapper.findCountByCategory(categoryLevel3Id);
+    }
+
+    @Override
+    public List<Product> getPageProduct(int pageIndex, int pageSize) {
+        List<Product> list = productMapper.getPageProduct(pageIndex,pageSize);
+        return list;
     }
 }
