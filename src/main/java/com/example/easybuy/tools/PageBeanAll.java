@@ -1,7 +1,5 @@
 package com.example.easybuy.tools;
 
-import com.example.easybuy.entity.News;
-
 import java.util.List;
 
 public class PageBeanAll {

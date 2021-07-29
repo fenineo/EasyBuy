@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/existLoginName")
+    @RequestMapping("/tourist/existLoginName")
     //查询登录名(User.loginName)是否已经存在
     public String existLoginName(String loginName){
         boolean flag = false;
@@ -28,7 +28,7 @@ public class UserController {
         return flag+"";
     }
 
-    @RequestMapping("/register")
+    @RequestMapping("/tourist/register")
     //用户注册
     public String register(String loginName, String userName, String password, String sex,
                            @RequestParam(required = false) String identityCode,
@@ -41,7 +41,7 @@ public class UserController {
         return flag+"";
     }
 
-    @RequestMapping("/login")
+    @RequestMapping("/tourist/login")
     //用户登陆
     public HashMap<String,Object> login(String loginName,String password){
         /**
@@ -120,12 +120,6 @@ public class UserController {
         }
         return flag+"";
     }
-    //根据登陆名获取用户
-    @RequestMapping("/userByLoginName")
-    public User userByLoginName(String loginName){
-        User user = userService.findByLoginName(loginName);
-        return user;
-    }
     //管理员修改用户
     @RequestMapping("/userModify")
     public String userModify(String token,String id, String loginName, String userName, String sex,
@@ -144,5 +138,10 @@ public class UserController {
         }
         return flag+"";
     }
-
+    //根据登陆名获取用户
+//    @RequestMapping("/userByLoginName")
+//    public User userByLoginName(String loginName){
+//        User user = userService.findByLoginName(loginName);
+//        return user;
+//    }
 }
