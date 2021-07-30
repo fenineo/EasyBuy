@@ -11,7 +11,7 @@ import java.io.Serializable;
 @SolrDocument
 public class Product implements Serializable {
     @Field("id")
-    private int id;                   //主键
+    private String id;                   //主键
     @Field("name_ik")
     private String name;              //名称
     @Field("description_iks")
@@ -31,7 +31,7 @@ public class Product implements Serializable {
     @Field("isDelete_i")
     private int isDelete;             //是否删除(1：删除 0：未删除)
 
-    public Product(int id, String name, String description, double price, int stock, int categoryLevel1Id, int categoryLevel2Id, int categoryLevel3Id, String fileName, int isDelete) {
+    public Product(String id, String name, String description, double price, int stock, int categoryLevel1Id, int categoryLevel2Id, int categoryLevel3Id, String fileName, int isDelete) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -63,11 +63,11 @@ public class Product implements Serializable {
                 '}';
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

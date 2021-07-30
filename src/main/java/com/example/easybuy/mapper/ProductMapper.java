@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface ProductMapper {
     int addProduct(Product product);    //添加商品
-    int removeProduct(int id);          //删除商品
+    int removeProduct(String id);          //删除商品
     int modifyProduct(Product product); //修改商品
     List<Product> findProductList();    //查询所有商品
-    Product findById(int id);           //查询商品id
+    Product findById(String id);           //查询商品id
     List<ProductCategory> findByType(int type);     //根据分类等级查询分类信息
     List<Product> findPageByCategory(@Param("pageIndex") int pageIndex,@Param("pageSize") int pageSize,@Param("categoryLevel3Id") int categoryLevel3Id);    //根据分类分页查询商品信息
     int findCountByCategory(int categoryLevel3Id);      //查询总记录数

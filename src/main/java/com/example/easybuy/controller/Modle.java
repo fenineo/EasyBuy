@@ -5,10 +5,12 @@ import com.example.easybuy.entity.ProductCategory;
 import com.example.easybuy.service.ProductService;
 import com.example.easybuy.tools.PageBean;
 import com.example.easybuy.tools.PageBeanAll;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,7 +41,8 @@ public class Modle {
         product.setCategoryLevel2Id(682);
         product.setCategoryLevel3Id(688);
         product.setFileName(formData);
-        boolean flag=productService.addProduct(product);
+        boolean flag= false;
+        flag = productService.addProduct(product);
         System.out.println(flag);
         return null;
     }

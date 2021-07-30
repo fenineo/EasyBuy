@@ -30,12 +30,32 @@ class EasyBuyApplicationTests {
     }
 
     @Test
+    void contextLoads1() throws SolrServerException, IOException {
+        solrClient.deleteByQuery("*:*");
+        solrClient.commit();
+    }
+
+    @Test
     void contextLoads2() throws SolrServerException, IOException {
         SolrQuery query = new SolrQuery();
-        query.setQuery("name_ik:香水");
-        QueryResponse qr = solrClient.query(query);
-        List<Product> list = qr.getBeans(Product.class);
-        System.out.println(list.toString());
+        query.setQuery("*:*");
+        query.setFacetLimit(-1);
+        QueryResponse qr = null;
+        try {
+            qr = solrClient.query(query);
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        List<Product> productList = qr.getBeans(Product.class);
+        System.out.println(productList.size());
+    }
+
+    @Test
+    void contextLoads3() throws SolrServerException, IOException {
+        Product product = productService.findById("733");
+        System.out.println(product.toString());
     }
 
 }

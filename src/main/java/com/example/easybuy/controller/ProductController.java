@@ -41,7 +41,7 @@ public class ProductController {
     }
     //根据商品id获取商品信息和分类路径
     @RequestMapping("/tourist/productInfo")
-    public HashMap<String,Object> productInfo(int id){
+    public HashMap<String,Object> productInfo(String id){
         Product product = productService.findById(id);
         ProductCategory categoryLv1 = productCategoryService.findById(product.getCategoryLevel1Id());
         ProductCategory categoryLv2 = productCategoryService.findById(product.getCategoryLevel2Id());
@@ -79,7 +79,7 @@ public class ProductController {
             path += categoryLv3.getName();
         }
 
-        int totalCount = productService.findCountByCategory(categoryId);
+        long totalCount = productService.findCountByCategory(categoryId);
         List<Product> productList = productService.findPageByCategory(pageIndex,pageSize,categoryId);
         PageBeanAll productPage = new PageBeanAll(pageIndex,pageSize,totalCount);
         productPage.setList(productList);
@@ -92,7 +92,7 @@ public class ProductController {
 
     //为购物车添加商品
     @RequestMapping("/addShopping")
-    public HashMap<String,Object> addShopping(String token,int productId,int number){
+    public HashMap<String,Object> addShopping(String token,String productId,int number){
         Product product = productService.findById(productId);       //根据商品id查询商品
         //根据token信息生成key
         HashMap<String,Object> user = JwtTool.parseMap(token);
@@ -107,7 +107,7 @@ public class ProductController {
             //从redis获取购物车
             shoppingProduct = redisTemplate.opsForList().range(key,0,-1);
             for (int i = 0;i < shoppingProduct.size();i++){
-                if (shoppingProduct.get(i).getId() == productId){
+                if (shoppingProduct.get(i).getId().equals(productId)){
                     shoppingProduct.get(i).setStock(shoppingProduct.get(i).getStock()+number);
                     redisTemplate.opsForList().set(key,i,shoppingProduct.get(i));
                     map.put("shoppingProduct",shoppingProduct);
@@ -128,7 +128,7 @@ public class ProductController {
     }
     //修改购物车中商品的数量
     @RequestMapping("/modifyShopping")
-    public HashMap<String,Object> modifyShopping(String token,int productId,int number){
+    public HashMap<String,Object> modifyShopping(String token,String productId,int number){
         //根据token信息生成key
         HashMap<String,Object> user = JwtTool.parseMap(token);
         String key = user.get("id")+""+user.get("loginName");
@@ -141,7 +141,7 @@ public class ProductController {
 
         if (shoppingProduct != null){
             for (int i = 0;i < shoppingProduct.size();i++){
-                if (shoppingProduct.get(i).getId() == productId){
+                if (shoppingProduct.get(i).getId().equals(productId)){
                     shoppingProduct.get(i).setStock(number);
                     redisTemplate.opsForList().set(key,i,shoppingProduct.get(i));
                     map.put("shoppingProduct",shoppingProduct);
@@ -154,7 +154,7 @@ public class ProductController {
     }
     //删除购物车中的商品
     @RequestMapping("/removeShopping")
-    public HashMap<String,Object> removeShopping(String token,int productId){
+    public HashMap<String,Object> removeShopping(String token,String productId){
         //根据token信息生成key
         HashMap<String,Object> user = JwtTool.parseMap(token);
         String key = user.get("id")+""+user.get("loginName");
@@ -167,7 +167,7 @@ public class ProductController {
 
         if (shoppingProduct != null){
             for (int i = 0;i < shoppingProduct.size();i++){
-                if (shoppingProduct.get(i).getId() == productId){
+                if (shoppingProduct.get(i).getId().equals(productId)){
                     redisTemplate.opsForList().remove(key,1,shoppingProduct.get(i));
                     shoppingProduct = redisTemplate.opsForList().range(key,0,-1);
                     map.put("flag",true);

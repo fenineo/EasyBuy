@@ -5,8 +5,8 @@ import java.util.List;
 public class PageBeanAll {
     private int pageIndex;  //页码
     private int pageSize;   //页容量
-    private int pageCount;  //总页数
-    private int totalCount; //总记录数
+    private long pageCount;  //总页数
+    private long totalCount; //总记录数
     private List list;//分页集合
 
     public int getPageIndex() {
@@ -25,11 +25,11 @@ public class PageBeanAll {
         this.pageSize = pageSize;
     }
 
-    public int getTotalCount() {
+    public long getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(int totalCount) {
+    public void setTotalCount(long totalCount) {
         this.totalCount = totalCount;
     }
 
@@ -41,12 +41,12 @@ public class PageBeanAll {
         this.list = list;
     }
 
-    public int getPageCount() {
+    public long getPageCount() {
         this.pageCount = totalCount%pageSize==0?totalCount/pageSize:(totalCount/pageSize)+1;
         return pageCount;
     }
 
-    public PageBeanAll(int pageIndex, int pageSize, int totalCount) {
+    public PageBeanAll(int pageIndex, int pageSize, long totalCount) {
         super();
         this.pageIndex = pageIndex;
         this.pageSize = pageSize;
