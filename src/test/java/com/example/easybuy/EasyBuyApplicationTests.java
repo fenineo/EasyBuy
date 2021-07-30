@@ -9,7 +9,6 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -18,12 +17,13 @@ import java.util.List;
 @SpringBootTest
 class EasyBuyApplicationTests {
     @Autowired
-    private SolrClient solrClient;
+    private SolrClient solrClient;//solr操作对象
     @Resource
-    private ProductService productService;
+    private ProductService productService;//我的商品类接口
 
     @Test
     void contextLoads() throws SolrServerException, IOException {
+        //为solr库添加数据
         List<Product> productList = productService.findProductList();
         solrClient.addBeans(productList);
         solrClient.commit();
@@ -31,15 +31,16 @@ class EasyBuyApplicationTests {
 
     @Test
     void contextLoads1() throws SolrServerException, IOException {
+        //删除所有数据
         solrClient.deleteByQuery("*:*");
         solrClient.commit();
     }
 
     @Test
-    void contextLoads2() throws SolrServerException, IOException {
+    void contextLoads3() throws SolrServerException, IOException {
+        //根据商品id查询数据
         SolrQuery query = new SolrQuery();
-        query.setQuery("*:*");
-        query.setFacetLimit(-1);
+        query.setQuery("id:756");
         QueryResponse qr = null;
         try {
             qr = solrClient.query(query);
@@ -48,13 +49,7 @@ class EasyBuyApplicationTests {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        List<Product> productList = qr.getBeans(Product.class);
-        System.out.println(productList.size());
-    }
-
-    @Test
-    void contextLoads3() throws SolrServerException, IOException {
-        Product product = productService.findById("733");
+        Product product = qr.getBeans(Product.class).get(0);
         System.out.println(product.toString());
     }
 
