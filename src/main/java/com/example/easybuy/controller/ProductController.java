@@ -89,6 +89,19 @@ public class ProductController {
         map.put("productPage",productPage);
         return map;
     }
+    //根据商品名查询商品集合
+    @RequestMapping("/tourist/productInfoByName")
+    public HashMap<String,Object> productInfoByName(int pageIndex,int pageSize,String name){
+
+        long totalCount = productService.findCountByName(name);
+        List<Product> productList = productService.findPageByName(pageIndex,pageSize,name);
+        PageBeanAll productPage = new PageBeanAll(pageIndex,pageSize,totalCount);
+        productPage.setList(productList);
+
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("productPage",productPage);
+        return map;
+    }
 
     //为购物车添加商品
     @RequestMapping("/addShopping")
