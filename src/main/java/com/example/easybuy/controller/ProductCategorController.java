@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.easybuy.entity.ProductCategory;
 import com.example.easybuy.service.ProductCategoryService;
+import com.example.easybuy.service.ProductService;
 import com.example.easybuy.tools.PageBeanAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/productCategory")
 public class ProductCategorController {
+    @Autowired
+    public ProductService productService;
 
     @Autowired
     public ProductCategoryService productCategoryService;
@@ -84,9 +87,6 @@ public class ProductCategorController {
 
     /**
      * 添加商品分类
-     * @param name
-     * @param parentId
-     * @param type
      * @return
      */
     @RequestMapping("/addProductCategory")
@@ -96,6 +96,7 @@ public class ProductCategorController {
         productCategory.setParentId(Integer.parseInt(parentId));
         productCategory.setType(Integer.parseInt(type));
         boolean flag=productCategoryService.addProductCategory(productCategory);
+        System.out.println(flag);
         if(flag==true){
             return flag;
         }else{
@@ -170,4 +171,19 @@ public class ProductCategorController {
         return map;
     }
 
+    /**
+     * 分级查询
+     */
+    @RequestMapping("/getCategoryLevel")
+    public HashMap<String,Object> getCategoryLevel(){
+        List<ProductCategory> one=productService.findByType(1);
+        List<ProductCategory> two=productService.findByType(2);
+        List<ProductCategory> three=productService.findByType(3);
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("one",one);
+//        System.out.println(one.toString());
+        map.put("two",two);
+        map.put("three",three);
+        return map;
+    }
 }
