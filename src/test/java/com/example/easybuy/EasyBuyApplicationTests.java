@@ -2,6 +2,7 @@ package com.example.easybuy;
 
 import com.example.easybuy.entity.Product;
 import com.example.easybuy.service.ProductService;
+import com.example.easybuy.tools.OrderNumberUtil;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -51,6 +52,12 @@ class EasyBuyApplicationTests {
         }
         Product product = qr.getBeans(Product.class).get(0);
         System.out.println(product.toString());
+    }
+
+    @Test
+    void contextLoads4() throws SolrServerException, IOException {
+        //删除所有数据
+        System.out.println(OrderNumberUtil.getOrderNumber());
     }
 
 }
