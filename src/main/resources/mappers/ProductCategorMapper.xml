@@ -34,9 +34,9 @@
         <trim prefix="SET " suffixOverrides=",">
             <if test="id != null">id=#{id},</if>
             <if test="name != null">name=#{name},</if>
-            <if test="parentId != null">parentId=#{parentId},</if>
-            <if test="type != null">type=#{type},</if>
-            <if test="iconClass != null">iconClass=#{iconClass},</if>
+             <if test="parentId != null">parentId=#{parentId},</if>
+             <if test="type != null">type=#{type},</if>
+             <if test="iconClass != null">iconClass=#{iconClass},</if>
         </trim>
         WHERE `id`= #{id};
     </update>
@@ -59,7 +59,7 @@
         SELECT COUNT(*) FROM `easybuy_product_category`
     </select>
     <select id="findcategoryPage" resultType="ProductCategory">
-        SELECT * FROM `easybuy_product_category` LIMIT #{pageIndex},#{pageSize}
+        SELECT * FROM `easybuy_product_category` ORDER BY TYPE ASC LIMIT #{pageIndex},#{pageSize}
     </select>
 
     <select id="onecategoryLevel1" resultType="ProductCategory">

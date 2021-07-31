@@ -126,17 +126,13 @@ public class ProductCategorController {
      * 修改商品分类
      * @param id
      * @param name
-     * @param parentId
-     * @param type
      * @return
      */
     @RequestMapping("/modifyProductCategory")
-    public String modifyproductCategory(String id,String name,String parentId,String type){
+    public String modifyproductCategory(String id,String name){
         ProductCategory productCategory = new ProductCategory();
         productCategory.setId(Integer.parseInt(id));
         productCategory.setName(name);
-        productCategory.setParentId(Integer.parseInt(parentId));
-        productCategory.setType(Integer.parseInt(type));
         boolean flag = productCategoryService.modifyProductCategory(productCategory);
         if(flag){
             return "true";
@@ -155,7 +151,12 @@ public class ProductCategorController {
         ProductCategory productCategory = productCategoryService.findById(Integer.parseInt(id));
         return JSON.toJSONString(productCategory);
     }
-    //分类列表
+
+    /**
+     * 分类列表
+     * @param pageIndex
+     * @return
+     */
     @RequestMapping("/categorylist")
     public HashMap<String,Object> categorlsit1(String pageIndex){
         int _pageIndex = Integer.parseInt(pageIndex);
