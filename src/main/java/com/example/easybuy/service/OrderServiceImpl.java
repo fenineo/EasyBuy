@@ -38,4 +38,14 @@ public class OrderServiceImpl implements OrderService{
         }
         return flag;
     }
+
+    @Override
+    public Order findById(int id) {
+        return orderMapper.findById(id);
+    }
+
+    @Override
+    public Order findBySerialNumber(String serialNumber) {
+        return orderMapper.findBySerialNumber(serialNumber);
+    }
 }

@@ -51,11 +51,11 @@
     </update>
 
     <select id="findProductList" resultType="Product">
-        SELECT * FROM `easybuy_product`
+        SELECT * FROM `easybuy_product` where isDelete=0
     </select>
 
     <select id="findCountProduct" resultType="int">
-        SELECT COUNT(*) FROM `easybuy_product`
+        SELECT COUNT(*) FROM `easybuy_product` where isDelete=0
     </select>
 
     <select id="findById" resultType="Product">
@@ -81,7 +81,7 @@
     </select>
 
     <select id="getPageProduct" resultType="Product">
-        SELECT * FROM `easybuy_product` GROUP BY `id` DESC LIMIT #{pageIndex},#{pageSize}
+        SELECT * FROM `easybuy_product` WHERE isDelete=0 GROUP BY `id` DESC LIMIT #{pageIndex},#{pageSize}
     </select>
 
 </mapper>
