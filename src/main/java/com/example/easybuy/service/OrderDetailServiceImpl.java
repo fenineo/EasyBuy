@@ -5,6 +5,7 @@ import com.example.easybuy.mapper.OrderDetailMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class OrderDetailServiceImpl implements OrderDetailService{
@@ -35,5 +36,10 @@ public class OrderDetailServiceImpl implements OrderDetailService{
             flag = true;
         }
         return flag;
+    }
+
+    @Override
+    public List<OrderDetail> findByOrderId(int orderId) {
+        return orderDetailMapper.findByOrderId(orderId);
     }
 }

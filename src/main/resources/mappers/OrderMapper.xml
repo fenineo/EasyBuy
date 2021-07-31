@@ -24,6 +24,7 @@
             <if test="loginName != null">#{loginName},</if>
             <if test="userAddress != null">#{userAddress},</if>
             <if test="createTime != null">#{createTime},</if>
+            <if test="cost != null">#{cost},</if>
             <if test="statePay != null">#{statePay},</if>
             <if test="serialNumber != null">#{serialNumber},</if>
         </trim>
@@ -37,9 +38,20 @@
             <if test="userAddress != null">userAddress = #{userAddress},</if>
             <if test="createTime != null">createTime = #{createTime},</if>
             <if test="cost != null">cost = #{cost},</if>
-            <if test="statePay != null">cost = #{statePay},</if>
+            <if test="statePay != null">statePay = #{statePay},</if>
             <if test="serialNumber != null">serialNumber = #{serialNumber},</if>
         </trim>
         WHERE `id`= #{id};
     </update>
+
+    <select id="findById" resultType="Order">
+        SELECT * FROM `easybuy_order`
+        WHERE `id`= #{id};
+    </select>
+
+    <select id="findBySerialNumber" resultType="Order">
+        SELECT * FROM `easybuy_order`
+        WHERE `serialNumber` = #{serialNumber}
+    </select>
+
 </mapper>
