@@ -21,7 +21,7 @@ public class Modle {
             pageIndex="1";
         }
         int _pageIndex = Integer.parseInt(pageIndex);
-        long totalCount =productService.findProductCount();
+        long totalCount = productService.findCountProduct();
         List<Product> pageList=productService.getPageProduct((_pageIndex-1)*10,10);
         PageBeanAll productPage = new PageBeanAll(_pageIndex,10,totalCount);
         productPage.setList(pageList);

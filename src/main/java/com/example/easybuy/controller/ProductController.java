@@ -208,9 +208,4 @@ public class ProductController {
         return shoppingProduct;
     }
 
-//    @RequestMapping("/demo")
-//    public String demo(String id){
-//        return "";
-//    }
-
 }

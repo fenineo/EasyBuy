@@ -4,13 +4,18 @@ import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.example.easybuy.config.AlipayConfig;
+import com.example.easybuy.entity.Order;
 import com.example.easybuy.service.OrderService;
+import com.example.easybuy.tools.JwtTool;
+import com.example.easybuy.tools.OrderNumberUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -22,6 +27,32 @@ public class OrderController {
     private OrderService orderService;
     @Autowired
     private AlipayConfig alipayConfig;
+
+    //添加订单请求，传入token，地址，总金额。添加订单成功后返回map数组，包含flag:成功信息,orderNumber:订单号
+    @RequestMapping("/addOrder")
+    public HashMap<String,Object> addOrder(String token,String address,double sum){
+        HashMap<String,Object> map = JwtTool.parseMap(token);//用token获取用户信息
+        int id = Integer.parseInt(map.get("id")+"");
+        String loginName = map.get("loginName")+"";
+        boolean flag = false;
+        Date date = new Date();//获取当前时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//自定义时间格式
+        String orderNumber = OrderNumberUtil.getOrderNumber();
+        //创建订单对象
+        Order order = new Order(0,id,loginName,address, sdf.format(date),sum,0, orderNumber);
+        if (orderService.addOrder(order)){
+            flag = true;
+        }
+        HashMap<String,Object> resultMap = new HashMap<>();
+        resultMap.put("flag",flag);
+        resultMap.put("orderNumber",orderNumber);
+        return resultMap;
+    }
+
+//    @RequestMapping("/demo")
+//    public String demo(String id){
+//        return "";
+//    }
 
     //跳转到支付宝支付页面
     @RequestMapping("/alipay")

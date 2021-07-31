@@ -133,7 +133,6 @@ public class ProductServiceImpl implements ProductService{
     }
 
     public long findCountByName(String name){
-
         SolrQuery query = new SolrQuery();
         query.setQuery("name_ik:"+name);
         QueryResponse qr = null;

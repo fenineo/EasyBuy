@@ -3,9 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.easybuy.mapper.OrderMapper">
+
     <delete id="removeOrder" parameterType="int">
         delete from `easybuy_order` where id=#{id}
     </delete>
+
     <insert id="addOrder">
         INSERT INTO `easybuy_order`
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -14,6 +16,7 @@
             <if test="userAddress != null">userAddress,</if>
             <if test="createTime != null">createTime,</if>
             <if test="cost != null">cost,</if>
+            <if test="statePay != null">statePay,</if>
             <if test="serialNumber != null">serialNumber,</if>
         </trim>
         <trim prefix="VALUE(" suffix=")" suffixOverrides=",">
@@ -21,10 +24,11 @@
             <if test="loginName != null">#{loginName},</if>
             <if test="userAddress != null">#{userAddress},</if>
             <if test="createTime != null">#{createTime},</if>
-            <if test="cost != null">#{cost},</if>
+            <if test="statePay != null">#{statePay},</if>
             <if test="serialNumber != null">#{serialNumber},</if>
         </trim>
     </insert>
+
     <update id="modifyOrder">
         UPDATE `easybuy_order`
         <trim prefix="SET " suffixOverrides=",">
@@ -33,6 +37,7 @@
             <if test="userAddress != null">userAddress = #{userAddress},</if>
             <if test="createTime != null">createTime = #{createTime},</if>
             <if test="cost != null">cost = #{cost},</if>
+            <if test="statePay != null">cost = #{statePay},</if>
             <if test="serialNumber != null">serialNumber = #{serialNumber},</if>
         </trim>
         WHERE `id`= #{id};

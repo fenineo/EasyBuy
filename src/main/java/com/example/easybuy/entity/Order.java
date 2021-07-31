@@ -10,21 +10,20 @@ public class Order {
     private int userId;            //用户主键
     private String loginName;      //登陆名
     private String userAddress;    //用户地址
-    private Date createTime;       //创建时间
+    private String createTime;       //创建时间
     private double cost;           //总消费
+    private int statePay;          //订单支付状态(1：已支付，0：未支付)
     private String serialNumber;   //订单号
 
-    public Order(int id, int userId, String loginName, String userAddress, Date createTime, double cost, String serialNumber) {
+    public Order(int id, int userId, String loginName, String userAddress, String createTime, double cost, int statePay, String serialNumber) {
         this.id = id;
         this.userId = userId;
         this.loginName = loginName;
         this.userAddress = userAddress;
         this.createTime = createTime;
         this.cost = cost;
+        this.statePay = statePay;
         this.serialNumber = serialNumber;
-    }
-
-    public Order() {
     }
 
     public int getId() {
@@ -59,11 +58,11 @@ public class Order {
         this.userAddress = userAddress;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -73,6 +72,14 @@ public class Order {
 
     public void setCost(double cost) {
         this.cost = cost;
+    }
+
+    public int getStatePay() {
+        return statePay;
+    }
+
+    public void setStatePay(int statePay) {
+        this.statePay = statePay;
     }
 
     public String getSerialNumber() {
