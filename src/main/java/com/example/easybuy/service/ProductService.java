@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface ProductService {
-    boolean addProduct(Product product);        //添加商品
+    boolean addProduct(Product product);        //添加商品，并返回添加时自动生成的id
     boolean removeProduct(String id);           //删除商品
     boolean modifyProduct(Product product);     //修改商品
     List<Product> findProductList();            //查询所有商品

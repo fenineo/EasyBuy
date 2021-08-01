@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,13 +31,12 @@ public class UserController {
 
     @RequestMapping("/tourist/register")
     //用户注册
-    public String register(String loginName, String userName, String password, String sex,
+    public String register(String loginName, String userName, String password, int sex,
                            @RequestParam(required = false) String identityCode,
                            @RequestParam(required = false) String email,
                            @RequestParam(required = false) String mobile){
         boolean flag = false;
-        int _sex = Integer.parseInt(sex);
-        User user = new User(0,loginName,userName,password,_sex,identityCode,email,mobile,0);
+        User user = new User(0,loginName,userName,password,sex,identityCode,email,mobile,0);
         flag = userService.addUser(user);
         return flag+"";
     }
@@ -69,73 +69,63 @@ public class UserController {
         }
         return map;
     }
-    //通过token获取登陆用户的信息
+    //获取登陆用户的信息
     @RequestMapping("/loginInfo")
-    public HashMap<String,Object> loginInfo(String token){
+    public HashMap<String,Object> loginInfo(HttpServletRequest request){
+        String token = request.getHeader("token");
+        boolean flag = false;
         HashMap<String,Object> map = new HashMap<>();
-        map.put("flag",false);
 
         if (JwtTool.parseJwt(token)){
             map = JwtTool.parseMap(token);
-            map.put("flag",true);
+            flag = true;
         }
 
+        map.put("flag",flag);
         return map;
     }
     //获得用户列表
     @RequestMapping("/userList")
-    public PageBeanAll userList(String pageIndex){
-        int _pageIndex = Integer.parseInt(pageIndex);
+    public PageBeanAll userList(int pageIndex){
         int totalCount = userService.findUserCount();
-        List<User> userList = userService.findUserPage(_pageIndex,10);
-        PageBeanAll userPage = new PageBeanAll(_pageIndex,10,totalCount);
+        List<User> userList = userService.findUserPage(pageIndex,10);
+        PageBeanAll userPage = new PageBeanAll(pageIndex,10,totalCount);
         userPage.setList(userList);
         return userPage;
     }
     //管理员添加用户
     @RequestMapping("/userAdd")
-    public String userAdd(String token,String loginName, String userName, String password, String sex,
+    public String userAdd(String loginName, String userName, String password, int sex,
                           @RequestParam(required = false) String identityCode,
                           @RequestParam(required = false) String email,
                           @RequestParam(required = false) String mobile,
-                          String type){
+                          int type){
         boolean flag = false;
-        Integer tokenType = (Integer) JwtTool.parseMap(token).get("type");//获得已登陆用户的权限等级
-        if (tokenType == 1){
-            int _sex = Integer.parseInt(sex);
-            int _type = Integer.parseInt(type);
-            User user = new User(0,loginName,userName,password,_sex,identityCode,email,mobile,_type);
-            flag = userService.addUser(user);
-        }
+
+        User user = new User(0,loginName,userName,password,sex,identityCode,email,mobile,type);
+        flag = userService.addUser(user);
+
         return flag+"";
     }
     //管理员删除用户
     @RequestMapping("/userRemove")
-    public String userRemove(String token,String id){
-        boolean flag = false;
-        int _id = Integer.parseInt(id);
-        Integer tokenType = (Integer) JwtTool.parseMap(token).get("type");//获得已登陆用户的权限等级
-        if (tokenType == 1){
-            flag = userService.removeUser(_id);
-        }
+    public String userRemove(int id){
+        boolean flag = userService.removeUser(id);
+
         return flag+"";
     }
-    //管理员修改用户
+    //修改用户信息
     @RequestMapping("/userModify")
-    public String userModify(String token,String id, String loginName, String userName, String sex,
+    public String userModify(int id, String loginName, String userName, int sex,
                              @RequestParam(required = false) String identityCode,
                              @RequestParam(required = false) String email,
                              @RequestParam(required = false) String mobile,
-                             String type){
+                             int type){
         boolean flag = false;
-        Integer tokenType = (Integer) JwtTool.parseMap(token).get("type");//获得已登陆用户的权限等级
-        if (tokenType == 1){
-            int _id = Integer.parseInt(id);
-            int _sex = Integer.parseInt(sex);
-            int _type = Integer.parseInt(type);
-            User user = new User(_id,loginName,userName,null,_sex,identityCode,email,mobile,_type);
-            flag = userService.modifyUser(user);
-        }
+
+        User user = new User(id,loginName,userName,null,sex,identityCode,email,mobile,type);
+        flag = userService.modifyUser(user);
+
         return flag+"";
     }
     //根据登陆名获取用户

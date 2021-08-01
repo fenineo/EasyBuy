@@ -10,6 +10,17 @@ public class OrderDetail {
     private int quantity;       //数量
     private double cost;        //消费
 
+    @Override
+    public String toString() {
+        return "OrderDetail{" +
+                "id=" + id +
+                ", orderId=" + orderId +
+                ", productId=" + productId +
+                ", quantity=" + quantity +
+                ", cost=" + cost +
+                '}';
+    }
+
     public OrderDetail() {
     }
 

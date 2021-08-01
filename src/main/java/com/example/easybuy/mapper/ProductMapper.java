@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface ProductMapper {
-    int addProduct(Product product);        //添加商品
+    int addProduct(Product product);        //添加商品，并返回添加时自动生成的id
     int removeProduct(String id);           //删除商品
     int modifyProduct(Product product);     //修改商品
     List<Product> findProductList();        //查询所有商品

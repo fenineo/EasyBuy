@@ -5,6 +5,7 @@ import com.example.easybuy.mapper.OrderMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService{
@@ -47,5 +48,17 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public Order findBySerialNumber(String serialNumber) {
         return orderMapper.findBySerialNumber(serialNumber);
+    }
+
+    @Override
+    public List<Order> findOrderPage(int pageIndex, int pageSize) {
+        //计算分页查询开始位置
+        Integer _pageIndex = (pageIndex-1)*pageSize;
+        return orderMapper.findOrderPage(_pageIndex,pageSize);
+    }
+
+    @Override
+    public int findOrderCount() {
+        return orderMapper.findOrderCount();
     }
 }

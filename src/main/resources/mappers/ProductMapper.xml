@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.easybuy.mapper.ProductMapper">
-    <insert id="addProduct">
+    <insert id="addProduct" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO `easybuy_product`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="name != null">name,</if>

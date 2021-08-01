@@ -54,4 +54,13 @@
         WHERE `serialNumber` = #{serialNumber}
     </select>
 
+    <select id="findOrderPage" resultType="Order">
+        SELECT * FROM `easybuy_order`
+        LIMIT #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="findOrderCount" resultType="int">
+        SELECT COUNT(*) FROM `easybuy_order`
+    </select>
+
 </mapper>

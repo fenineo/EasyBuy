@@ -1,8 +1,13 @@
 package com.example.easybuy;
 
+import com.example.easybuy.entity.Order;
+import com.example.easybuy.entity.OrderDetail;
+import com.example.easybuy.entity.OrderDetailVo;
 import com.example.easybuy.entity.Product;
+import com.example.easybuy.service.OrderDetailService;
+import com.example.easybuy.service.OrderService;
 import com.example.easybuy.service.ProductService;
-import com.example.easybuy.tools.OrderNumberUtil;
+import com.example.easybuy.tools.PageBeanAll;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -13,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
@@ -21,6 +27,10 @@ class EasyBuyApplicationTests {
     private SolrClient solrClient;//solr操作对象
     @Resource
     private ProductService productService;//我的商品类接口
+    @Resource
+    private OrderService orderService;
+    @Resource
+    private OrderDetailService orderDetailService;
 
     @Test
     void contextLoads() throws SolrServerException, IOException {
@@ -56,8 +66,11 @@ class EasyBuyApplicationTests {
 
     @Test
     void contextLoads4() throws SolrServerException, IOException {
-        //删除所有数据
-        System.out.println(OrderNumberUtil.getOrderNumber());
+        List<Order> orderList = orderService.findOrderPage(1,3);
+
+        List<OrderDetailVo> orderDetailList = orderDetailService.findByOrderIdList(orderList);
+
+        System.out.println(orderDetailList.toString());
     }
 
 }

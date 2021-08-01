@@ -36,4 +36,14 @@
         SELECT * FROM `easybuy_order_detail`
         WHERE `orderId`= #{orderId};
     </select>
+
+    <select id="findByOrderIdList" resultType="OrderDetailVo">
+        SELECT od.id,od.productId,od.quantity,od.cost,pro.name,pro.fileName
+        FROM `easybuy_order_detail` AS od,`easybuy_product` AS pro
+        WHERE `orderId` IN
+        <foreach collection="list" item="order" open="(" separator="," close=")">
+            #{order.id}
+        </foreach>
+        AND od.productId = pro.id
+    </select>
 </mapper>

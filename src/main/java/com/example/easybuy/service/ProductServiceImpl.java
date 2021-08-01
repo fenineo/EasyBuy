@@ -25,10 +25,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public boolean addProduct(Product product) {
         boolean flag = false;
-        if (productMapper.addProduct(product) > 0){
+        int id = productMapper.addProduct(product);
+        if (id  > 0){
             try {
-                List<Product> productList = productMapper.findProductList();
-                solrClient.addBeans(productList);
+                product.setId(id+"");
+                solrClient.addBean(product);
                 solrClient.commit();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -62,8 +63,7 @@ public class ProductServiceImpl implements ProductService{
         boolean flag = false;
         if (productMapper.modifyProduct(product) > 0){
             try {
-                List<Product> productList = productMapper.findProductList();
-                solrClient.addBeans(productList);
+                solrClient.addBean(product);
                 solrClient.commit();
             } catch (IOException e) {
                 e.printStackTrace();

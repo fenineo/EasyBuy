@@ -1,6 +1,8 @@
 package com.example.easybuy.service;
 
+import com.example.easybuy.entity.Order;
 import com.example.easybuy.entity.OrderDetail;
+import com.example.easybuy.entity.OrderDetailVo;
 import com.example.easybuy.mapper.OrderDetailMapper;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +43,10 @@ public class OrderDetailServiceImpl implements OrderDetailService{
     @Override
     public List<OrderDetail> findByOrderId(int orderId) {
         return orderDetailMapper.findByOrderId(orderId);
+    }
+
+    @Override
+    public List<OrderDetailVo> findByOrderIdList(List<Order> list) {
+        return orderDetailMapper.findByOrderIdList(list);
     }
 }
