@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.easybuy.entity.News;
 import com.example.easybuy.service.NewsService;
 import com.example.easybuy.tools.PageBean;
+import com.example.easybuy.tools.PageBeanAll;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -96,7 +97,7 @@ public class NewsController {
         int _pageIndex = Integer.parseInt(pageIndex);
         int totalCount =newsService.getNews().size();
         List<News> pageList=newsService.getPageNews((Integer.parseInt(pageIndex)-1)*10, 10);
-        PageBean pageBean=new PageBean(_pageIndex,10,totalCount);
+        PageBeanAll pageBean=new PageBeanAll(_pageIndex,10,totalCount);
         pageBean.setList(pageList);
         return JSON.toJSONString(pageBean);
     }
