@@ -81,8 +81,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public int findCountProduct() {
-        return productMapper.findCountProduct();
+    public int findCountProduct(int isDelete) {
+        return productMapper.findCountProduct(isDelete);
     }
 
     @Override
@@ -108,8 +108,8 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<Product> getPageProduct(int pageIndex, int pageSize) {
-        return productMapper.getPageProduct(pageIndex,pageSize);
+    public List<Product> getPageProduct(int pageIndex, int pageSize,int isDelete) {
+        return productMapper.getPageProduct(pageIndex,pageSize,isDelete);
     }
 
     public List<Product> findPageByName(int pageIndex, int pageSize,String name){
