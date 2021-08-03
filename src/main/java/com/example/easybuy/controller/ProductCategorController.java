@@ -96,7 +96,6 @@ public class ProductCategorController {
         productCategory.setParentId(Integer.parseInt(parentId));
         productCategory.setType(Integer.parseInt(type));
         boolean flag=productCategoryService.addProductCategory(productCategory);
-        System.out.println(flag);
         if(flag==true){
             return flag;
         }else{
@@ -129,10 +128,12 @@ public class ProductCategorController {
      * @return
      */
     @RequestMapping("/modifyProductCategory")
-    public String modifyproductCategory(String id,String name){
+    public String modifyproductCategory(String id,String name,String parentId,String type){
         ProductCategory productCategory = new ProductCategory();
         productCategory.setId(Integer.parseInt(id));
         productCategory.setName(name);
+        productCategory.setParentId(Integer.parseInt(parentId));
+        productCategory.setType(Integer.parseInt(type));
         boolean flag = productCategoryService.modifyProductCategory(productCategory);
         if(flag){
             return "true";
@@ -181,6 +182,7 @@ public class ProductCategorController {
         List<ProductCategory> two=productService.findByType(2);
         List<ProductCategory> three=productService.findByType(3);
         HashMap<String,Object> map = new HashMap<>();
+//        System.out.println(two.toString());
         map.put("one",one);
 //        System.out.println(one.toString());
         map.put("two",two);
