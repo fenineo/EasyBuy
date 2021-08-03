@@ -86,12 +86,18 @@ public class UserController {
     }
     //获得用户列表
     @RequestMapping("/userList")
-    public PageBeanAll userList(int pageIndex){
+    public HashMap<String,Object> userList(HttpServletRequest request,int pageIndex){
+        String token = request.getHeader("token");
+
         int totalCount = userService.findUserCount();
         List<User> userList = userService.findUserPage(pageIndex,10);
         PageBeanAll userPage = new PageBeanAll(pageIndex,10,totalCount);
         userPage.setList(userList);
-        return userPage;
+
+        HashMap<String,Object> map = new HashMap<>();               //返回给前端的数据集合
+        map.put("loginName",JwtTool.parseMap(token).get("loginName"));
+        map.put("userPage",userPage);
+        return map;
     }
     //管理员添加用户
     @RequestMapping("/userAdd")
@@ -116,17 +122,25 @@ public class UserController {
     }
     //修改用户信息
     @RequestMapping("/userModify")
-    public String userModify(int id, String loginName, String userName, int sex,
+    public String userModify(int id, String userName, int sex,
+                             @RequestParam(required = false) String password,
                              @RequestParam(required = false) String identityCode,
                              @RequestParam(required = false) String email,
                              @RequestParam(required = false) String mobile,
                              int type){
         boolean flag = false;
 
-        User user = new User(id,loginName,userName,null,sex,identityCode,email,mobile,type);
+        User user = new User(id,null,userName,password,sex,identityCode,email,mobile,type);
         flag = userService.modifyUser(user);
 
         return flag+"";
+    }
+    //用token获取登陆用户的信息
+    @RequestMapping("/userInfoByToken")
+    public User userInfoByToken(HttpServletRequest request){
+        String token = request.getHeader("token");
+        User user = userService.findByLoginName(JwtTool.parseMap(token).get("loginName")+"");
+        return user;
     }
     //根据登陆名获取用户
 //    @RequestMapping("/userByLoginName")

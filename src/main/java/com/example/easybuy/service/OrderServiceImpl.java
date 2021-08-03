@@ -61,4 +61,16 @@ public class OrderServiceImpl implements OrderService{
     public int findOrderCount() {
         return orderMapper.findOrderCount();
     }
+
+    @Override
+    public List<Order> findOrderPageByUser(int pageIndex, int pageSize, int userId) {
+        //计算分页查询开始位置
+        Integer _pageIndex = (pageIndex-1)*pageSize;
+        return orderMapper.findOrderPageByUser(_pageIndex,pageSize,userId);
+    }
+
+    @Override
+    public int findOrderCountByUser(int userId) {
+        return orderMapper.findOrderCountByUser(userId);
+    }
 }

@@ -46,7 +46,7 @@
 
     <select id="findById" resultType="Order">
         SELECT * FROM `easybuy_order`
-        WHERE `id`= #{id};
+        WHERE `id`= #{id}
     </select>
 
     <select id="findBySerialNumber" resultType="Order">
@@ -61,6 +61,18 @@
 
     <select id="findOrderCount" resultType="int">
         SELECT COUNT(*) FROM `easybuy_order`
+    </select>
+
+    <select id="findOrderPageByUser" resultType="Order">
+        SELECT * FROM `easybuy_order`
+        WHERE `userId`= #{userId}
+        ORDER BY `createTime` DESC
+        LIMIT #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="findOrderCountByUser" resultType="int">
+        SELECT COUNT(*) FROM `easybuy_order`
+        WHERE `userId`= #{userId}
     </select>
 
 </mapper>

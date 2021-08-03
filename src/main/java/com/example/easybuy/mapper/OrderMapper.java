@@ -13,4 +13,6 @@ public interface OrderMapper {
     Order findBySerialNumber(String serialNumber);//根据订单号查询订单信息
     List<Order> findOrderPage(@Param("pageIndex") int pageIndex, @Param("pageSize") int pageSize);//分页查询订单信息
     int findOrderCount();//查询订单表总记录数
+    List<Order> findOrderPageByUser(@Param("pageIndex") int pageIndex, @Param("pageSize") int pageSize,@Param("userId") int userId);//根据用户分页查询订单信息
+    int findOrderCountByUser(int userId);//查询用户在订单表的订单记录数
 }

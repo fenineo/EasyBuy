@@ -90,7 +90,7 @@ public class OrderController {
     public Order findOrderInfo(int orderId){
         return orderService.findById(orderId);
     }
-    //分页查询订单和订单详细信息
+    //分页查询全部订单和订单详细信息
     @RequestMapping("/findOrderPage")
     public HashMap<String,Object> findOrderPage(int pageIndex){
         //根据页码查询分页信息并生成分页对象
@@ -107,6 +107,25 @@ public class OrderController {
         return map;
     }
 
+    //分页查询全部订单和订单详细信息
+    @RequestMapping("/findOrderPageByUser")
+    public HashMap<String,Object> findOrderPageByUser(HttpServletRequest request,int pageIndex){
+        String token = request.getHeader("token");
+        int userId = (int)JwtTool.parseMap(token).get("id");
+
+        //根据页码查询分页信息并生成分页对象
+        int totalCount = orderService.findOrderCountByUser(userId);
+        List<Order> orderList = orderService.findOrderPageByUser(pageIndex,3,userId);
+        PageBeanAll orderPage = new PageBeanAll(pageIndex,3,totalCount);
+        orderPage.setList(orderList);
+        //根据订单集合查询订单详细信息集合
+        List<OrderDetailVo> orderDetailVoList = orderDetailService.findByOrderIdList(orderList);
+        //返回数据
+        HashMap<String,Object> map = new HashMap<>();
+        map.put("orderPage",orderPage);
+        map.put("orderDetailVoList",orderDetailVoList);
+        return map;
+    }
 
     //为购物车添加商品
     @RequestMapping("/addShopping")

@@ -13,4 +13,6 @@ public interface OrderService {
     Order findBySerialNumber(String serialNumber);//根据订单号查询订单信息
     List<Order> findOrderPage( int pageIndex, int pageSize);//分页查询订单信息
     int findOrderCount();//查询订单表总记录数
+    List<Order> findOrderPageByUser(int pageIndex,int pageSize,int userId);//根据用户分页查询订单信息
+    int findOrderCountByUser(int userId);//查询用户在订单表的订单记录数
 }

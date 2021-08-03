@@ -2,9 +2,9 @@ package com.example.easybuy.controller;
 
 import com.example.easybuy.entity.Product;
 import com.example.easybuy.entity.ProductCategory;
+import com.example.easybuy.entity.User;
 import com.example.easybuy.service.ProductCategoryService;
 import com.example.easybuy.service.ProductService;
-import com.example.easybuy.tools.JwtTool;
 import com.example.easybuy.tools.PageBeanAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -101,6 +101,101 @@ public class ProductController {
 
         HashMap<String,Object> map = new HashMap<>();
         map.put("productPage",productPage);
+        return map;
+    }
+
+    //查询收藏夹信息
+    @RequestMapping("/findFavorite")
+    public List<Product> findFavorite(HttpServletRequest request){
+        String token = request.getHeader("token");
+        String key = token+"favo"; //用token+shop作为购物车的key
+
+        List<Product> favoriteList = new ArrayList<>();
+
+        if(redisTemplate.hasKey(key)){
+            //从redis获取购物车
+            favoriteList = redisTemplate.opsForList().range(key,0,-1);
+        }
+
+        return favoriteList;
+    }
+    //用户收藏夹添加商品
+    @RequestMapping("/addFavorite")
+    public HashMap<String,Object> addFavorite(HttpServletRequest request, String productId){
+        String token = request.getHeader("token");
+        /**返回参数  flag:添加结果提示，favoriteList:收藏夹商品集合*/
+        HashMap<String,Object> map = new HashMap<>();               //返回给前端的数据集合
+        List<Product> favoriteList = new ArrayList<>();             //收藏夹集合
+        boolean flag = false;                                       //默认添加失败
+
+        String key = token+"favo"; //用token+favo作为收藏夹的key
+        Product product = productService.findById(productId);       //根据商品id查询商品
+
+        //判断用户是否已有收藏夹
+        if(redisTemplate.hasKey(key)){
+            favoriteList = redisTemplate.opsForList().range(key,0,-1);//查询收藏夹
+            //判断商品是否重复
+            for(int i = 0;i < favoriteList.size();i++){
+                if (favoriteList.get(i).getId().equals(productId)){
+                    map.put("flag",flag);
+                    return map;
+                }
+            }
+            //判断收藏夹是否超量
+            if (favoriteList.size() > 7){
+                redisTemplate.opsForList().set(key,0,product);   //修改redis中的数据;
+                favoriteList.set(0,product);                        //收藏的商品已经有8件，替换第一件
+                map.put("flag",true);
+                map.put("favoriteList",favoriteList);
+                return map;
+            }
+        }
+
+        //收藏夹不存在，或者收藏夹未满且添加的商品不重复，向收藏夹新添商品
+        if (redisTemplate.opsForList().rightPushAll(key,product) > 0){
+            flag = true;
+        }
+
+        favoriteList = redisTemplate.opsForList().range(key,0,-1);//查询修改后的收藏夹商品集合
+        map.put("flag",flag);
+        map.put("favoriteList",favoriteList);
+        return map;
+    }
+    //用户收藏夹移除商品
+    @RequestMapping("/removeFavorite")
+    public HashMap<String,Object> removeFavorite(HttpServletRequest request, String productId,int amount){
+        String token = request.getHeader("token");
+        /**返回参数  flag:结果提示，favoriteList:收藏夹商品集合*/
+        HashMap<String,Object> map = new HashMap<>();               //返回给前端的数据集合
+        List<Product> favoriteList = new ArrayList<>();             //收藏夹集合
+        boolean flag = false;                                       //默认删除失败
+
+        String key = token+"favo"; //用token+favo作为收藏夹的key
+
+        //判断用户是否已有收藏夹
+        if(redisTemplate.hasKey(key)){
+            //amount==1，只删除一条数据
+            if (amount == 1){
+                Product product = productService.findById(productId);             //根据商品id查询商品
+                favoriteList = redisTemplate.opsForList().range(key,0,-1);  //查询收藏夹
+                //循环查找目标商品
+                for(int i = 0;i < favoriteList.size();i++){
+                    if (favoriteList.get(i).getId().equals(productId)){
+                        redisTemplate.opsForList().remove(key,1,favoriteList.get(i));//先删除购物车内商品
+                        favoriteList.remove(i);//同步删除商品集合内商品
+                        flag = true;
+                        break;
+                    }
+                }
+            }else {
+                //删除所有数据
+                redisTemplate.delete(key);
+                flag = true;
+            }
+        }
+
+        map.put("flag",flag);
+        map.put("favoriteList",favoriteList);
         return map;
     }
 

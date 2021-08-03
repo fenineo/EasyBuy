@@ -2,12 +2,15 @@ package com.example.easybuy.tools;
 
 import java.util.List;
 
+/**
+ * 分页工具类
+ */
 public class PageBeanAll {
-    private int pageIndex;  //页码
-    private int pageSize;   //页容量
-    private long pageCount;  //总页数
-    private long totalCount; //总记录数
-    private List list;//分页集合
+    private int pageIndex;      //页码
+    private int pageSize;       //页容量
+    private long pageCount;     //总页数
+    private long totalCount;    //总记录数
+    private List list;          //分页集合
 
     public int getPageIndex() {
         return pageIndex;
