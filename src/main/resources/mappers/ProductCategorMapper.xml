@@ -71,4 +71,7 @@
     <select id="onecategoryLevel3" resultType="ProductCategory">
         SELECT * FROM `easybuy_product_category` WHERE TYPE = 3
     </select>
+    <select id="findByCategoryName" resultType="ProductCategory">
+        SELECT * FROM `easybuy_product_category` WHERE `name` = #{name}
+    </select>
 </mapper>

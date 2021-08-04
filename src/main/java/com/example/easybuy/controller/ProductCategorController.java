@@ -182,11 +182,18 @@ public class ProductCategorController {
         List<ProductCategory> two=productService.findByType(2);
         List<ProductCategory> three=productService.findByType(3);
         HashMap<String,Object> map = new HashMap<>();
-//        System.out.println(two.toString());
         map.put("one",one);
-//        System.out.println(one.toString());
         map.put("two",two);
         map.put("three",three);
         return map;
+    }
+
+    @RequestMapping("/existName")
+    public String getCategoryName(String name){
+        boolean flag = false;
+        if(productCategoryService.findByCategoryName(name) != null){
+            flag = true;
+        }
+        return flag+"";
     }
 }

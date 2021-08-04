@@ -4,9 +4,6 @@ package com.example.easybuy.mapper;
  */
 
 import com.example.easybuy.entity.ProductCategory;
-import com.example.easybuy.entity.User;
-import org.apache.ibatis.annotations.Param;
-
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -24,4 +21,5 @@ public interface ProductCategoryMapper {
     List<ProductCategory> onecategoryLevel1();                  //查询一级分类商品
     List<ProductCategory> onecategoryLevel2();                  //查询二级分类商品
     List<ProductCategory> onecategoryLevel3();                  //查询三级分类商品
+    ProductCategory findByCategoryName(String name);            //查分类名称是否存在
 }

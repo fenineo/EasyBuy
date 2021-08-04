@@ -91,4 +91,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
         return productCategoryMapper.onecategoryLevel3();
     }
 
+    @Override
+    public ProductCategory findByCategoryName(String name) {
+        return productCategoryMapper.findByCategoryName(name);
+    }
+
 }

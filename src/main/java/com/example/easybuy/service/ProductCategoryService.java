@@ -17,4 +17,5 @@ public interface ProductCategoryService {
     List<ProductCategory> onecategoryLevel1();                  //查询一级分类商品
     List<ProductCategory> onecategoryLevel2();                  //查询二级分类商品
     List<ProductCategory> onecategoryLevel3();                  //查询三级分类商品
+    ProductCategory findByCategoryName(String name);            //查分类名称是否存在
 }
