@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.easybuy.mapper.ProductMapper">
+    <insert id="addProduct" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO `easybuy_product`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="description != null">description,</if>
+            <if test="price != null">price,</if>
+            <if test="stock != null">stock,</if>
+            <if test="categoryLevel1Id != null">categoryLevel1Id,</if>
+            <if test="categoryLevel2Id != null">categoryLevel2Id,</if>
+            <if test="categoryLevel3Id != null">categoryLevel3Id,</if>
+            <if test="fileName != null">fileName,</if>
+            <if test="isDelete != null">isDelete,</if>
+        </trim>
+        <trim prefix="VALUE(" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="description != null">#{description},</if>
+            <if test="price != null">#{price},</if>
+            <if test="stock != null">#{stock},</if>
+            <if test="categoryLevel1Id != null">#{categoryLevel1Id},</if>
+            <if test="categoryLevel2Id != null">#{categoryLevel2Id},</if>
+            <if test="categoryLevel3Id != null">#{categoryLevel3Id},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="isDelete != null">#{isDelete},</if>
+        </trim>
+    </insert>
+
+    <delete id="removeProduct">
+        DELETE FROM `easybuy_product`
+        WHERE `id`= #{id}
+    </delete>
+
+    <update id="modifyProduct">
+        UPDATE `easybuy_product`
+        <trim prefix="SET " suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="stock != null">stock = #{stock},</if>
+            <if test="categoryLevel1Id != null">categoryLevel1Id = #{categoryLevel1Id},</if>
+            <if test="categoryLevel2Id != null">categoryLevel2Id = #{categoryLevel2Id},</if>
+            <if test="categoryLevel3Id != null">categoryLevel3Id = #{categoryLevel3Id},</if>
+            <if test="fileName != null">fileName = #{fileName},</if>
+            <if test="isDelete != null">isDelete = #{isDelete},</if>
+        </trim>
+        WHERE `id`= #{id}
+    </update>
+
+    <select id="findProductList" resultType="Product">
+        SELECT * FROM `easybuy_product` where isDelete=0
+    </select>
+
+    <select id="findCountProduct" resultType="int">
+        SELECT COUNT(*) FROM `easybuy_product` where isDelete=#{isDelete}
+    </select>
+
+    <select id="findById" resultType="Product">
+        SELECT * FROM `easybuy_product`
+        WHERE `id`= #{id}
+    </select>
+
+    <select id="findByType" resultType="ProductCategory">
+        SELECT * FROM `easybuy_product_category`
+        WHERE `type` = #{type}
+        GROUP BY `type` ASC,id
+    </select>
+
+    <select id="findPageByCategory" resultType="Product">
+        SELECT * FROM `easybuy_product`
+        WHERE `categoryLevel3Id` = #{categoryLevel3Id}
+            LIMIT #{pageIndex},#{pageSize}
+    </select>
+
+    <select id="findCountByCategory" resultType="int">
+        SELECT COUNT(*) FROM `easybuy_product`
+        WHERE `categoryLevel3Id` = #{categoryLevel3Id}
+    </select>
+
+    <select id="getPageProduct" resultType="Product">
+        SELECT * FROM `easybuy_product` WHERE isDelete=#{isDelete} GROUP BY `id` DESC LIMIT #{pageIndex},#{pageSize}
+    </select>
+
+</mapper>

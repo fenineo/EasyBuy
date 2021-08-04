@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.easybuy.mapper.OrderDetailMapper">
+    <delete id="removeOrderDetail" parameterType="int">
+        delete from `easybuy_order_detail` where id=#{id}
+    </delete>
+    <insert id="addOrderDetail">
+        INSERT INTO `easybuy_order_detail`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">orderId,</if>
+            <if test="productId != null">productId,</if>
+            <if test="quantity != null">quantity,</if>
+            <if test="cost != null">cost,</if>
+        </trim>
+        <trim prefix="VALUE(" suffix=")" suffixOverrides=",">
+            <if test="orderId != null">#{orderId},</if>
+            <if test="productId != null">#{productId},</if>
+            <if test="quantity != null">#{quantity},</if>
+            <if test="cost != null">#{cost},</if>
+        </trim>
+    </insert>
+    <update id="modifyOrderDetail">
+        UPDATE `easybuy_order_detail`
+        <trim prefix="SET " suffixOverrides=",">
+            <if test="orderId != null">orderId = #{orderId},</if>
+            <if test="productId != null">productId = #{productId},</if>
+            <if test="quantity != null">quantity = #{quantity},</if>
+            <if test="cost != null">cost = #{cost},</if>
+        </trim>
+        WHERE `id`= #{id};
+    </update>
+
+    <select id="findByOrderId" resultType="OrderDetail">
+        SELECT * FROM `easybuy_order_detail`
+        WHERE `orderId`= #{orderId};
+    </select>
+
+    <select id="findByOrderIdList" resultType="OrderDetailVo">
+        SELECT od.id,od.orderId,od.quantity,od.cost,pro.name,pro.fileName
+        FROM `easybuy_order_detail` AS od,`easybuy_product` AS pro
+        WHERE `orderId` IN
+        <foreach collection="list" item="order" open="(" separator="," close=")">
+            #{order.id}
+        </foreach>
+        AND od.productId = pro.id
+    </select>
+</mapper>

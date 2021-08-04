@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.easybuy.mapper.NewsMapper">
+    <select id="getNewsDesc" resultType="News">
+        SELECT * FROM `easybuy_news` GROUP BY `createTime` DESC,id DESC LIMIT 0,5
+    </select>
+    <delete id="removeNews">
+        delete from `easybuy_news` where id=#{id}
+    </delete>
+    <insert id="addNews">
+        INSERT INTO `easybuy_news`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="createTime != null">createTime,</if>
+        </trim>
+        <trim prefix="VALUE(" suffix=")" suffixOverrides=",">
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+    <update id="modifyNews">
+        UPDATE `easybuy_news`
+        <trim prefix="SET " suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+        </trim>
+        WHERE `id`= #{id};
+    </update>
+    <select id="getNews" resultType="News">
+        SELECT * FROM `easybuy_news`
+    </select>
+    <select id="getPageNews" resultType="News">
+        SELECT * FROM `easybuy_news` GROUP BY `createTime` DESC,id DESC  LIMIT #{pageIndex},#{pageSize}
+    </select>
+    <select id="findById" resultType="News">
+        SELECT * FROM `easybuy_news` where id=#{id}
+    </select>
+
+</mapper>
