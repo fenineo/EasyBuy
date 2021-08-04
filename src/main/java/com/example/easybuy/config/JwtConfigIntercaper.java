@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 //拦截器配置文件
-@Configuration
+//@Configuration
 public class JwtConfigIntercaper implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -21,5 +21,25 @@ public class JwtConfigIntercaper implements WebMvcConfigurer {
                         "/order/tourist/*",
                         "/orderDetail/tourist/*",
                         "***/error");//放行路径
+//        //管理员请求拦截
+//        registry.addInterceptor(new JwtintercapetAdmin())
+//                .addPathPatterns(
+//                        "/user/admin/**",
+//                        "/product/admin/**",
+//                        "/News/admin/**",
+//                        "/UserAddress/admin/**",
+//                        "/productCategory/admin/**",
+//                        "/order/admin/**",
+//                        "/orderDetail/admin/**");
+//        //用户请求拦截
+//        registry.addInterceptor(new JwtintercapetUser())
+//                .addPathPatterns(
+//                        "/user/regist/**",
+//                        "/product/regist/**",
+//                        "/News/regist/**",
+//                        "/UserAddress/regist/**",
+//                        "/productCategory/regist/**",
+//                        "/order/regist/**",
+//                        "/orderDetail/regist/**");
     }
 }
