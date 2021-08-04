@@ -50,13 +50,11 @@ public class OrderController {
         String orderNumber = OrderNumberUtil.getOrderNumber();
 
         //创建订单对象
-        System.out.println(sum);
         Order order = new Order(0,id,loginName,address, sdf.parse(sdf.format(date)),sum,0, orderNumber);
         if (orderService.addOrder(order)){
             order = orderService.findBySerialNumber(orderNumber);//根据订单号查询订单
 
-            //根据用户id和登陆名信息生成key
-            String key = user.get("id")+""+user.get("loginName");
+            String key = token+"shop";  //用token+shop作为购物车的key
             List<Product> shoppingProduct = new ArrayList<>();
             if(redisTemplate.hasKey(key)){
                 //从redis获取购物车
@@ -144,16 +142,27 @@ public class OrderController {
         //判断用户是否已有购物车
         if(redisTemplate.hasKey(key)){
             shoppingProduct = redisTemplate.opsForList().range(key,0,-1);
+
             for (int i = 0;i < shoppingProduct.size();i++){
-                //判断购物车内商品id是否与添加商品id相等，是则直接购买商品数量+number
+                //判断购物车内商品id是否与添加商品id相等
                 if (shoppingProduct.get(i).getId().equals(productId)){
-                    shoppingProduct.get(i).setStock(shoppingProduct.get(i).getStock()+number);
-                    redisTemplate.opsForList().set(key,i,shoppingProduct.get(i));
-                    map.put("flag",true);
+
+                    //购物车中已有商品数量+添加的数量
+                    int num = shoppingProduct.get(i).getStock()+number;
+                    if(product.getStock() > num){
+                        //添加后数量小于商品库存，商品数量增加
+                        shoppingProduct.get(i).setStock(num);
+                        redisTemplate.opsForList().set(key,i,shoppingProduct.get(i));
+                        flag = true;
+                    }
+                    //添加后数量大于商品库存，添加失败
+                    map.put("flag",flag);
                     map.put("shoppingProduct",shoppingProduct);
                     return map;
+
                 }
             }
+
         }
 
         //购物车不存在，或者新加商品不在购物车中，向购物车新添商品
@@ -171,22 +180,28 @@ public class OrderController {
     @RequestMapping("/modifyShopping")
     public HashMap<String,Object> modifyShopping(HttpServletRequest request,String productId,int number){
         String token = request.getHeader("token");
-        String key = token+"shop"; //用token+shop作为购物车的key
+        String key = token+"shop";                                  //用token+shop作为购物车的key
+        Product product = productService.findById(productId);       //根据商品id查询商品
 
         boolean flag = false;//返回结果提示，默认失败
 
         //从redis获取购物车
         List<Product> shoppingProduct = redisTemplate.opsForList().range(key,0,-1);
 
-        if (shoppingProduct != null){
-            for (int i = 0;i < shoppingProduct.size();i++){
-                if (shoppingProduct.get(i).getId().equals(productId)){
-                    shoppingProduct.get(i).setStock(number);
-                    redisTemplate.opsForList().set(key,i,shoppingProduct.get(i));
-                    flag = true;
+        //判断商品库存是否大于购买数量
+        if(product.getStock() > number){
+            if (shoppingProduct != null){
+                for (int i = 0;i < shoppingProduct.size();i++){
+                    if (shoppingProduct.get(i).getId().equals(productId)){
+                        //商品id相等，修改集合中商品的数量
+                        shoppingProduct.get(i).setStock(number);
+                        redisTemplate.opsForList().set(key,i,shoppingProduct.get(i));
+                        flag = true;
+                    }
                 }
             }
         }
+
 
         HashMap<String,Object> map = new HashMap<>();
         map.put("flag",flag);

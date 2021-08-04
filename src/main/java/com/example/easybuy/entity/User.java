@@ -1,9 +1,11 @@
 package com.example.easybuy.entity;
 
+import java.io.Serializable;
+
 /**
  * 用户表实体类
  */
-public class User {
+public class User implements Serializable {
     private int id;                 //主键
     private String loginName;       //登录名(账号)
     private String userName;        //用户名
