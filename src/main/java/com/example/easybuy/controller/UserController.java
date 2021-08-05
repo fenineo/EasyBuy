@@ -1,6 +1,5 @@
 package com.example.easybuy.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.example.easybuy.entity.User;
 import com.example.easybuy.service.UserService;
 import com.example.easybuy.tools.JwtTool;
@@ -148,8 +147,8 @@ public class UserController {
                              @RequestParam(required = false) String mobile,
                              int type){
         boolean flag = false;
-
-        User user = new User(id,null,userName,password,sex,identityCode,email,mobile,type);
+        String _password = MD5Util.md5Hex(password);
+        User user = new User(id,null,userName,_password,sex,identityCode,email,mobile,type);
         flag = userService.modifyUser(user);
 
         return flag+"";

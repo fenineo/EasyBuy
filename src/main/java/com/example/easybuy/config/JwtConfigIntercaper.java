@@ -7,12 +7,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.Resource;
+
 //拦截器配置文件
 @Configuration
 public class JwtConfigIntercaper implements WebMvcConfigurer {
-    @Autowired
+    @Resource
     private  JwtintercapetAdmin jwtintercapetAdmin;
-    @Autowired
+    @Resource
     private  JwtintercapetUser jwtintercapetUser;
 
     @Override

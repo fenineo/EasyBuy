@@ -18,6 +18,6 @@ public interface ProductService {
     List<Product> getPageProduct(int pageIndex, int pageSize,int isDelete);      //分页查询
 
     int findCountByCategory(int categoryLevel3Id);      //根据三级分类查询总记录数
-    List<Product> findPageByName(int pageIndex, int pageSize,String name);      //根据商品名分页查询集合
+    List<Product> findPageByName(int pageIndex, int pageSize,String name,String orderBy);      //根据商品名分页查询集合
     long findCountByName(String name);       //根据商品名查询总记录数
 }
