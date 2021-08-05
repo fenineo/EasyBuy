@@ -6,10 +6,13 @@ import com.example.easybuy.entity.ProductCategory;
 import com.example.easybuy.service.ProductCategoryService;
 import com.example.easybuy.service.ProductService;
 import com.example.easybuy.tools.PageBeanAll;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/productCategory")
+@Api(tags = "分类列表层Controller",description = "操作管理员模块分类列表数据")
 public class ProductCategorController {
     @Autowired
     public ProductService productService;
@@ -31,7 +35,8 @@ public class ProductCategorController {
      * @param productCategory
      * @return
      */
-    @RequestMapping("/onecategoryLevel1")
+    @ApiOperation("查询一级列表")
+    @RequestMapping(value = "/onecategoryLevel1",method = RequestMethod.POST)
     public String onecategoryLevel1(ProductCategory productCategory){
         List<ProductCategory> list1 = productCategoryService.onecategoryLevel1();
         return JSON.toJSONString(list1);
@@ -42,7 +47,8 @@ public class ProductCategorController {
      * @param productCategory
      * @return
      */
-    @RequestMapping("/onecategoryLevel2")
+    @ApiOperation("查询二级列表")
+    @RequestMapping(value = "/onecategoryLevel2",method = RequestMethod.POST)
     public String onecategoryLevel2(ProductCategory productCategory){
         List<ProductCategory> list2 =productCategoryService.onecategoryLevel2();
         return JSON.toJSONString(list2);
@@ -53,7 +59,8 @@ public class ProductCategorController {
      * @param productCategory
      * @return
      */
-    @RequestMapping("/onecategoryLevel3")
+    @ApiOperation("查询三级列表")
+    @RequestMapping(value = "/onecategoryLevel3",method = RequestMethod.POST)
     public String onecategoryLevel3(ProductCategory productCategory){
         List<ProductCategory> list3 =productCategoryService.onecategoryLevel2();
         return JSON.toJSONString(list3);
@@ -65,7 +72,8 @@ public class ProductCategorController {
      * @param productCategory
      * @return
      */
-    @RequestMapping("/tourist/twocategoryLevel2Id")
+    @ApiOperation("查询左侧导航一二三级")
+    @RequestMapping(value = "/tourist/twocategoryLevel2Id",method = RequestMethod.POST)
     public String twocategoryLevel2Id(ProductCategory productCategory){
         List<ProductCategory> list1 =productCategoryService.onecategoryLevel3Id();
 
@@ -89,7 +97,8 @@ public class ProductCategorController {
      * 添加商品分类
      * @return
      */
-    @RequestMapping("/addProductCategory")
+    @ApiOperation("添加商品分类")
+    @RequestMapping(value = "/addProductCategory",method = RequestMethod.POST)
     public boolean addproductCategor(String name,String parentId,String type){
         ProductCategory productCategory = new ProductCategory();
         productCategory.setName(name);
@@ -109,7 +118,8 @@ public class ProductCategorController {
      * @param id
      * @return
      */
-    @RequestMapping("/removeProductCategory")
+    @ApiOperation("删除商品分类")
+    @RequestMapping(value = "/removeProductCategory",method = RequestMethod.POST)
     public boolean removeproductCategory(String id){
         ProductCategory productCategory = new ProductCategory();
         productCategory.setId(Integer.parseInt(id));
@@ -127,7 +137,8 @@ public class ProductCategorController {
      * @param name
      * @return
      */
-    @RequestMapping("/modifyProductCategory")
+    @ApiOperation("修改商品分类")
+    @RequestMapping(value = "/modifyProductCategory",method = RequestMethod.POST)
     public String modifyproductCategory(String id,String name,String parentId,String type){
         ProductCategory productCategory = new ProductCategory();
         productCategory.setId(Integer.parseInt(id));
@@ -147,7 +158,8 @@ public class ProductCategorController {
      * @param id
      * @return
      */
-    @RequestMapping("/findById")
+    @ApiOperation("查询商品分类id")
+    @RequestMapping(value = "/findById",method = RequestMethod.POST)
     public String findById(String id){
         ProductCategory productCategory = productCategoryService.findById(Integer.parseInt(id));
         return JSON.toJSONString(productCategory);
@@ -158,7 +170,8 @@ public class ProductCategorController {
      * @param pageIndex
      * @return
      */
-    @RequestMapping("/categorylist")
+    @ApiOperation("分类列表")
+    @RequestMapping(value = "/categorylist",method = RequestMethod.POST)
     public HashMap<String,Object> categorlsit1(String pageIndex){
         int _pageIndex = Integer.parseInt(pageIndex);
         int totalCount = productCategoryService.findcategoryCount();
@@ -176,7 +189,8 @@ public class ProductCategorController {
     /**
      * 分级查询
      */
-    @RequestMapping("/getCategoryLevel")
+    @ApiOperation("分级查询")
+    @RequestMapping(value = "/getCategoryLevel",method = RequestMethod.POST)
     public HashMap<String,Object> getCategoryLevel(){
         List<ProductCategory> one=productService.findByType(1);
         List<ProductCategory> two=productService.findByType(2);
@@ -188,12 +202,32 @@ public class ProductCategorController {
         return map;
     }
 
-    @RequestMapping("/existName")
+    /**
+     * 查询name
+     * @param name
+     * @return
+     */
+    @ApiOperation("查询name")
+    @RequestMapping(value = "/existName",method = RequestMethod.POST)
     public String getCategoryName(String name){
         boolean flag = false;
         if(productCategoryService.findByCategoryName(name) != null){
             flag = true;
         }
         return flag+"";
+    }
+
+    /**
+     * 查询分类名称,父类Id,分类级别
+     * @param name
+     * @param parentId
+     * @param type
+     * @return
+     */
+    @ApiOperation("查询分类名称,父类Id,分类级别")
+    @RequestMapping(value = "/verificationTypeName",method = RequestMethod.POST)
+    public String getCategoryParentId(String name,String parentId,String type){
+        ProductCategory productCategory = productCategoryService.findbyCategoryParentId(name,Integer.parseInt(parentId),Integer.parseInt(type));
+        return JSON.toJSONString(productCategory);
     }
 }

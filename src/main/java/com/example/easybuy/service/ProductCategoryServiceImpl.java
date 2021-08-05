@@ -96,4 +96,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService{
         return productCategoryMapper.findByCategoryName(name);
     }
 
+    @Override
+    public ProductCategory findbyCategoryParentId(String name, int parentId, int type) {
+        return productCategoryMapper.findbyCategoryParentId(name,parentId,type);
+    }
+
 }

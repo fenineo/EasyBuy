@@ -74,4 +74,8 @@
     <select id="findByCategoryName" resultType="ProductCategory">
         SELECT * FROM `easybuy_product_category` WHERE `name` = #{name}
     </select>
+    <select id="findbyCategoryParentId" resultType="ProductCategory">
+        SELECT * FROM `easybuy_product_category`
+        WHERE `name` = #{name} AND parentId = #{parentId} AND TYPE = #{type}
+    </select>
 </mapper>
