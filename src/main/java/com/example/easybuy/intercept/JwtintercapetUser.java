@@ -17,13 +17,12 @@ import java.time.Duration;
 @Component
 public class JwtintercapetUser implements HandlerInterceptor {
 
-    @Autowired
+    @Resource
     private RedisTemplate redisTemplate;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
-
         if (redisTemplate.hasKey(token)){
             User user = (User) redisTemplate.opsForValue().get(token);                  //获取用户对象
             long time = redisTemplate.opsForValue().getOperations().getExpire(token);   //获取key剩余过期时间

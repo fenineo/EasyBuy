@@ -36,7 +36,7 @@ public class NewsController {
      * 查询所有的新闻数据
      */
     @ApiOperation("查询所有新闻数据")
-    @RequestMapping(value = "/getAllNews",method = RequestMethod.GET)
+    @RequestMapping(value = "/tourist/getAllNews",method = RequestMethod.GET)
     public String getNews(){
         List<News> list=newsService.getNews();
         return JSON.toJSONString(list);
@@ -45,7 +45,7 @@ public class NewsController {
      * 添加新闻
      */
     @ApiOperation("添加新闻数据")
-    @RequestMapping(value = "/addNews",method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/addNews",method = RequestMethod.GET)
     public boolean addNews(String title,String content){
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(System.currentTimeMillis());
@@ -61,7 +61,7 @@ public class NewsController {
      * 删除新闻
      */
     @ApiOperation("输出新闻数据")
-    @RequestMapping(value = "/removeNews",method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/removeNews",method = RequestMethod.GET)
     public String removeNews(String id){
         String a;
         boolean flag=newsService.removeNews(Integer.parseInt(id));
@@ -76,7 +76,7 @@ public class NewsController {
      * 修改新闻
      */
     @ApiOperation("修改新闻数据")
-    @RequestMapping(value ="/modifyNews",method = RequestMethod.GET)
+    @RequestMapping(value ="/admin/modifyNews",method = RequestMethod.GET)
     public boolean modifyNews(String id,String title,String content){
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(System.currentTimeMillis());
