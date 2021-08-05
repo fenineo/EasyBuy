@@ -13,6 +13,8 @@ import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,15 +25,18 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @SpringBootTest
 class EasyBuyApplicationTests {
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private SolrClient solrClient;
 
     @Test
     void contextLoads() throws SolrServerException, IOException {
-        System.out.println(MD5Util.md5Hex(123456+""));
     }
 
     @Test

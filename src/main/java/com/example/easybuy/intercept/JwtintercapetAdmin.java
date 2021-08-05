@@ -4,6 +4,7 @@ import com.example.easybuy.entity.User;
 import com.example.easybuy.tools.JwtTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import java.time.Duration;
 /**
  * 管理员请求拦截器
  */
+@Component
 public class JwtintercapetAdmin implements HandlerInterceptor {
     @Autowired
     private RedisTemplate redisTemplate;
@@ -20,6 +22,7 @@ public class JwtintercapetAdmin implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
+
         if (redisTemplate.hasKey(token)){
             User user = (User) redisTemplate.opsForValue().get(token);                  //获取用户对象
             long time = redisTemplate.opsForValue().getOperations().getExpire(token);   //获取key剩余过期时间

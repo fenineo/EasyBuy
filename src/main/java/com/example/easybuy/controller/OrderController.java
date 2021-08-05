@@ -11,9 +11,12 @@ import com.example.easybuy.service.ProductService;
 import com.example.easybuy.tools.JwtTool;
 import com.example.easybuy.tools.OrderNumberUtil;
 import com.example.easybuy.tools.PageBeanAll;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +27,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/order")
+@Api(tags = "订单层Controller",description = "操作订单数据")
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -37,7 +41,8 @@ public class OrderController {
     private AlipayConfig alipayConfig;
 
     //添加订单请求，传入token，地址，总金额。添加订单成功后返回map数组，包含 flag:成功信息,orderNumber:订单号
-    @RequestMapping("/addOrder")
+    @ApiOperation("添加订单接口")
+    @RequestMapping(value = "/regist/addOrder",method = RequestMethod.POST)
     public HashMap<String,Object> addOrder(HttpServletRequest request,String address,float sum) throws ParseException {
         String token = request.getHeader("token");
         HashMap<String,Object> user = JwtTool.parseMap(token);//用token获取用户信息
@@ -79,17 +84,14 @@ public class OrderController {
         return resultMap;
     }
 
-//    @RequestMapping("/demo")
-//    public String demo(String id){
-//        return "";
-//    }
-
-    @RequestMapping("/findOrderInfo")
+    @ApiOperation("查询订单信息")
+    @RequestMapping(value = "/regist/findOrderInfo",method = RequestMethod.POST)
     public Order findOrderInfo(int orderId){
         return orderService.findById(orderId);
     }
-    //分页查询全部订单和订单详细信息
-    @RequestMapping("/findOrderPage")
+
+    @ApiOperation("分页查询全部订单和订单详细信息")
+    @RequestMapping(value = "/admin/findOrderPage",method = RequestMethod.POST)
     public HashMap<String,Object> findOrderPage(int pageIndex){
         //根据页码查询分页信息并生成分页对象
         int totalCount = orderService.findOrderCount();
@@ -105,8 +107,8 @@ public class OrderController {
         return map;
     }
 
-    //分页查询全部订单和订单详细信息
-    @RequestMapping("/findOrderPageByUser")
+    @ApiOperation("分页查询指定用户全部订单和订单详细信息")
+    @RequestMapping(value = "/regist/findOrderPageByUser",method = RequestMethod.POST)
     public HashMap<String,Object> findOrderPageByUser(HttpServletRequest request,int pageIndex){
         String token = request.getHeader("token");
         int userId = (int)JwtTool.parseMap(token).get("id");
@@ -125,8 +127,8 @@ public class OrderController {
         return map;
     }
 
-    //为购物车添加商品
-    @RequestMapping("/addShopping")
+    @ApiOperation("购物车添加商品")
+    @RequestMapping(value = "/regist/addShopping",method = RequestMethod.POST)
     public HashMap<String,Object> addShopping(HttpServletRequest request, String productId, int number){
         String token = request.getHeader("token");
         String key = token+"shop"; //用token+shop作为购物车的key
@@ -178,8 +180,9 @@ public class OrderController {
         map.put("shoppingProduct",shoppingProduct);
         return map;
     }
-    //修改购物车中商品的数量
-    @RequestMapping("/modifyShopping")
+
+    @ApiOperation("修改购物车中商品的数量")
+    @RequestMapping(value = "/regist/modifyShopping",method = RequestMethod.POST)
     public HashMap<String,Object> modifyShopping(HttpServletRequest request,String productId,int number){
         String token = request.getHeader("token");
         String key = token+"shop";                                  //用token+shop作为购物车的key
@@ -210,8 +213,9 @@ public class OrderController {
         map.put("shoppingProduct",shoppingProduct);
         return map;
     }
-    //删除购物车中的商品
-    @RequestMapping("/removeShopping")
+
+    @ApiOperation("删除购物车中的商品")
+    @RequestMapping(value = "/regist/removeShopping",method = RequestMethod.POST)
     public HashMap<String,Object> removeShopping(HttpServletRequest request,String productId){
         String token = request.getHeader("token");
         String key = token+"shop"; //用token+shop作为购物车的key
@@ -238,8 +242,9 @@ public class OrderController {
         map.put("shoppingProduct",shoppingProduct);
         return map;
     }
-    //查询购物车信息
-    @RequestMapping("/findShopping")
+
+    @ApiOperation("查询购物车信息")
+    @RequestMapping(value = "/regist/findShopping",method = RequestMethod.POST)
     public List<Product> findShopping(HttpServletRequest request){
         String token = request.getHeader("token");
         String key = token+"shop"; //用token+shop作为购物车的key
@@ -254,21 +259,15 @@ public class OrderController {
         return shoppingProduct;
     }
 
-    //跳转到支付宝支付页面
-    @RequestMapping("/alipay")
+    @ApiOperation("跳转到支付宝支付页面")
+    @RequestMapping(value = "/regist/alipay",method = RequestMethod.POST)
     public String alipay(int orderId){
         Order order = orderService.findById(orderId);
         return alipayConfig.toPayPage(order.getLoginName(),order.getSerialNumber(),order.getCost()+"");
     }
 
-    //同步
-    @RequestMapping("/return")
-    public String returnUrl(HttpServletRequest request) throws UnsupportedEncodingException, AlipayApiException {
-        return "";
-    }
-
-    //异步
-    @RequestMapping("/tourist/notify")
+    @ApiOperation("支付宝支付异步回调")
+    @RequestMapping(value = "/tourist/notify",method = RequestMethod.POST)
     public String notifyUrl(HttpServletRequest request) throws UnsupportedEncodingException, AlipayApiException {
         System.out.println("异步效验");
         Map<String,String> params = new HashMap<String,String>();
