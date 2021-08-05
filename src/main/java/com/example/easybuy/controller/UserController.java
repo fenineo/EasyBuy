@@ -124,7 +124,9 @@ public class UserController {
                           int type){
         boolean flag = false;
 
-        User user = new User(0,loginName,userName,password,sex,identityCode,email,mobile,type);
+        String _password = MD5Util.md5Hex(password);
+
+        User user = new User(0,loginName,userName,_password,sex,identityCode,email,mobile,type);
         flag = userService.addUser(user);
 
         return flag+"";

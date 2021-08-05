@@ -118,8 +118,12 @@ public class OrderController {
         List<Order> orderList = orderService.findOrderPageByUser(pageIndex,3,userId);
         PageBeanAll orderPage = new PageBeanAll(pageIndex,3,totalCount);
         orderPage.setList(orderList);
-        //根据订单集合查询订单详细信息集合
-        List<OrderDetailVo> orderDetailVoList = orderDetailService.findByOrderIdList(orderList);
+
+        List<OrderDetailVo> orderDetailVoList = new ArrayList<>();
+        if(orderList.size() > 0){
+            //根据订单集合查询订单详细信息集合
+            orderDetailVoList = orderDetailService.findByOrderIdList(orderList);
+        }
         //返回数据
         HashMap<String,Object> map = new HashMap<>();
         map.put("orderPage",orderPage);
