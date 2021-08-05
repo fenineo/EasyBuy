@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -118,6 +119,13 @@ public class ProductServiceImpl implements ProductService{
 
         SolrQuery query = new SolrQuery();
         query.setQuery("name_ik:"+name);
+        query.addFilterQuery("isDelete_i:0");
+
+        query.setHighlight(true);
+        query.addHighlightField("name_ik");
+        query.setHighlightSimplePre("<font color=\"yellow\">");
+        query.setHighlightSimplePost("</font>");
+
         query.setStart(_pageIndex);
         query.setRows(pageSize);
         QueryResponse qr = null;
@@ -129,12 +137,17 @@ public class ProductServiceImpl implements ProductService{
             e.printStackTrace();
         }
         List<Product> productList = qr.getBeans(Product.class);
+        Map<String, Map<String,List<String>>> highlighting = qr.getHighlighting();
+        for (int i = 0;i < productList.size();i++){
+            productList.get(i).setName(highlighting.get(productList.get(i).getId()).get("name_ik").get(0));
+        }
         return productList;
     }
 
     public long findCountByName(String name){
         SolrQuery query = new SolrQuery();
         query.setQuery("name_ik:"+name);
+        query.addFilterQuery("isDelete_i:0");
         QueryResponse qr = null;
         try {
             qr = solrClient.query(query);

@@ -1,5 +1,6 @@
 package com.example.easybuy.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.example.easybuy.entity.User;
 import com.example.easybuy.service.UserService;
 import com.example.easybuy.tools.JwtTool;
@@ -71,9 +72,6 @@ public class UserController {
                 String token = JwtTool.budilJwt(user);//生成登陆用户对应的token
                 //将用户对象存放到redis，设置过期时间为30分钟
                 redisTemplate.opsForValue().set(token,user, Duration.ofMinutes(30L));
-                System.out.println("token是否存在"+redisTemplate.hasKey(token));
-                System.out.println(token);
-                System.out.println("通过token获取到的对象"+redisTemplate.opsForValue().get(token).toString());
                 map.put("flag",true);
                 map.put("token",token);
             }else {
@@ -82,11 +80,12 @@ public class UserController {
         }else {
             map.put("prompt","用户不存在");
         }
+
         return map;
     }
 
     @ApiOperation("获取登陆用户的信息")
-    @RequestMapping(value = "/loginInfo",method = RequestMethod.POST)
+    @RequestMapping(value = "/regist/loginInfo",method = RequestMethod.POST)
     public HashMap<String,Object> loginInfo(HttpServletRequest request){
         String token = request.getHeader("token");
         boolean flag = false;
@@ -102,7 +101,7 @@ public class UserController {
     }
 
     @ApiOperation("获取用户列表")
-    @RequestMapping(value = "/userList",method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/userList",method = RequestMethod.POST)
     public HashMap<String,Object> userList(HttpServletRequest request,int pageIndex){
         String token = request.getHeader("token");
 
@@ -118,7 +117,7 @@ public class UserController {
     }
 
     @ApiOperation("管理员添加用户")
-    @RequestMapping(value = "/userAdd",method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/userAdd",method = RequestMethod.POST)
     public String userAdd(String loginName, String userName, String password, int sex,
                           @RequestParam(required = false) String identityCode,
                           @RequestParam(required = false) String email,
@@ -133,7 +132,7 @@ public class UserController {
     }
 
     @ApiOperation("管理员删除用户")
-    @RequestMapping(value = "/userRemove",method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/userRemove",method = RequestMethod.POST)
     public String userRemove(int id){
         boolean flag = userService.removeUser(id);
 
@@ -141,7 +140,7 @@ public class UserController {
     }
 
     @ApiOperation("修改用户信息")
-    @RequestMapping(value = "/userModify",method = RequestMethod.POST)
+    @RequestMapping(value = "/regist/userModify",method = RequestMethod.POST)
     public String userModify(int id, String userName, int sex,
                              @RequestParam(required = false) String password,
                              @RequestParam(required = false) String identityCode,
@@ -157,7 +156,7 @@ public class UserController {
     }
 
     @ApiOperation("获取登陆用户的信息")
-    @RequestMapping(value = "/userInfoByToken",method = RequestMethod.POST)
+    @RequestMapping(value = "/regist/userInfoByToken",method = RequestMethod.POST)
     public User userInfoByToken(HttpServletRequest request){
         String token = request.getHeader("token");
         User user = userService.findByLoginName(JwtTool.parseMap(token).get("loginName")+"");
