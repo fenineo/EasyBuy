@@ -113,13 +113,18 @@ public class ProductServiceImpl implements ProductService{
         return productMapper.getPageProduct(pageIndex,pageSize,isDelete);
     }
 
-    public List<Product> findPageByName(int pageIndex, int pageSize,String name){
+    public List<Product> findPageByName(int pageIndex, int pageSize,String name,String orderBy){
         //计算分页查询开始位置
         Integer _pageIndex = (pageIndex-1)*pageSize;
 
         SolrQuery query = new SolrQuery();
         query.setQuery("name_ik:"+name);
         query.addFilterQuery("isDelete_i:0");
+        if (orderBy.equals("1")){
+            query.setSort("price_d",SolrQuery.ORDER.desc);
+        }else if (orderBy.equals("0")){
+            query.setSort("price_d",SolrQuery.ORDER.asc);
+        }
 
         query.setHighlight(true);
         query.addHighlightField("name_ik");

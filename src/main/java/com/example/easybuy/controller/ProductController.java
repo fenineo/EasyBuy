@@ -9,6 +9,7 @@ import com.example.easybuy.tools.PageBeanAll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -92,10 +93,10 @@ public class ProductController {
     }
     //根据商品名查询商品集合
     @RequestMapping("/tourist/productInfoByName")
-    public HashMap<String,Object> productInfoByName(int pageIndex,int pageSize,String name){
+    public HashMap<String,Object> productInfoByName(int pageIndex,int pageSize,String name,@RequestParam(required = false) String orderBy){
 
         long totalCount = productService.findCountByName(name);
-        List<Product> productList = productService.findPageByName(pageIndex,pageSize,name);
+        List<Product> productList = productService.findPageByName(pageIndex,pageSize,name,orderBy);
         PageBeanAll productPage = new PageBeanAll(pageIndex,pageSize,totalCount);
         productPage.setList(productList);
 
