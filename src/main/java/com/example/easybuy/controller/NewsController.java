@@ -5,7 +5,10 @@ import com.example.easybuy.entity.News;
 import com.example.easybuy.service.NewsService;
 import com.example.easybuy.tools.PageBean;
 import com.example.easybuy.tools.PageBeanAll;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -15,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/News")
+@Api(tags = "新闻层Controller",description = "操作新闻数据")
 public class NewsController {
     @Resource
     private NewsService newsService;
@@ -22,7 +26,8 @@ public class NewsController {
      * 查询最新的5条新闻数据 按照时间排序
      * @return
      */
-    @RequestMapping("/tourist/getNewsDesc")
+    @ApiOperation("查询最新的5条新闻数据")
+    @RequestMapping(value = "/tourist/getNewsDesc",method = RequestMethod.GET)
     public String getNewsDesc(){
         List<News> list=newsService.getNewsDesc();
         return JSON.toJSONString(list);
@@ -30,7 +35,8 @@ public class NewsController {
     /**
      * 查询所有的新闻数据
      */
-    @RequestMapping("/tourist/getAllNews")
+    @ApiOperation("查询所有新闻数据")
+    @RequestMapping(value = "/tourist/getAllNews",method = RequestMethod.GET)
     public String getNews(){
         List<News> list=newsService.getNews();
         return JSON.toJSONString(list);
@@ -38,7 +44,8 @@ public class NewsController {
     /**
      * 添加新闻
      */
-    @RequestMapping("/tourist/addNews")
+    @ApiOperation("添加新闻数据")
+    @RequestMapping(value = "/admin/addNews",method = RequestMethod.GET)
     public boolean addNews(String title,String content){
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(System.currentTimeMillis());
@@ -53,7 +60,8 @@ public class NewsController {
     /**
      * 删除新闻
      */
-    @RequestMapping("/tourist/removeNews")
+    @ApiOperation("输出新闻数据")
+    @RequestMapping(value = "/admin/removeNews",method = RequestMethod.GET)
     public String removeNews(String id){
         String a;
         boolean flag=newsService.removeNews(Integer.parseInt(id));
@@ -67,7 +75,8 @@ public class NewsController {
     /**
      * 修改新闻
      */
-    @RequestMapping("/tourist/modifyNews")
+    @ApiOperation("修改新闻数据")
+    @RequestMapping(value ="/admin/modifyNews",method = RequestMethod.GET)
     public boolean modifyNews(String id,String title,String content){
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(System.currentTimeMillis());
@@ -79,7 +88,8 @@ public class NewsController {
     /**
      *分页查询
      */
-    @RequestMapping("/tourist/getPageNews")
+    @ApiOperation("分页新闻数据")
+    @RequestMapping(value = "/tourist/getPageNews",method = RequestMethod.GET)
     public String getPageNews(String pageIndex){
 //        if(currentpage==null || currentpage.equals("")){
 //            currentpage= "1";
@@ -105,7 +115,8 @@ public class NewsController {
     /**
      *根据Id查询 查询新闻详情
      */
-    @RequestMapping("/tourist/findById")
+    @ApiOperation("查询新闻详情数据")
+    @RequestMapping(value = "/tourist/findById",method = RequestMethod.GET)
     public String findById(String id){
         News news=newsService.findById(Integer.parseInt(id));
         return JSON.toJSONString(news);
